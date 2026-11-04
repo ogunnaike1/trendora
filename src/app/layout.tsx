@@ -24,7 +24,7 @@ export const viewport: Viewport = { themeColor: "#405B70" };
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${instrument.variable} ${hanken.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <Shell>{children}</Shell>
       </body>
     </html>

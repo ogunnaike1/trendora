@@ -6,10 +6,10 @@ import { IMG } from "@/data/images";
 import { useReducedMotion } from "@/lib/hooks";
 
 const SLIDES = [
-  { label: "The Travel Kitchen", line: "Hot meals, wherever the road goes.", sub: "The 24V 2.5L air fryer — oil-free cooking from your truck socket.", img: IMG.heroAirFryer, href: "/products/24v-electric-air-fryer-2-5l", cta: "Shop the air fryer", pos: "center" },
-  { label: "Long Haul Essentials", line: "Better lunches on the long road.", sub: "Electric lunch boxes, kettles and cookers built for 12V and 24V.", img: IMG.roadTruck, href: "/shop?group=Lunch%20Boxes", cta: "Shop lunch boxes", pos: "center" },
-  { label: "Camper & Van Life", line: "Brew, boil and bake anywhere.", sub: "Compact kettles, coffee makers and camp stoves for life on wheels.", img: IMG.vanYellow, href: "/shop?group=Kettles%20%26%20Coffee", cta: "Shop kettles & coffee", pos: "center 40%" },
-  { label: "Compact Ovens", line: "A little oven for a small space.", sub: "Toaster and convection ovens sized for the cab and the camper.", img: IMG.ovenVan, href: "/shop?group=Ovens", cta: "Shop ovens", pos: "center" },
+  { label: "The Travel Kitchen", line: "Hot meals on the road.", sub: "The 24V 2.5L air fryer — oil-free cooking straight from your truck socket.", img: IMG.heroAirFryer, href: "/products/24v-electric-air-fryer-2-5l", cta: "Shop the air fryer", pos: "center" },
+  { label: "Kettles & Coffee", line: "Boil anywhere.", sub: "12V and 24V kettles, coffee makers and espresso makers for the cab or camper.", img: IMG.heroKettle, href: "/shop?group=Kettles%20%26%20Coffee", cta: "Shop kettles & coffee", pos: "center" },
+  { label: "Lunch Boxes", line: "Hot lunch, any lay-by.", sub: "Electric lunch boxes that warm your meal from a vehicle socket.", img: IMG.heroLunchbox, href: "/shop?group=Lunch%20Boxes", cta: "Shop lunch boxes", pos: "center" },
+  { label: "Cookers & Pans", line: "Cook it your way.", sub: "Compact rice cookers, multi cookers and electric pans built for 12V and 24V.", img: IMG.heroPan, href: "/shop?group=Cookers%20%26%20Pans", cta: "Shop cookers & pans", pos: "center" },
 ];
 const DURATION = 6500;
 
@@ -77,9 +77,9 @@ export default function HeroCarousel() {
               <Photo src={s.img} alt={s.label} sizes="100vw" priority={n === 0} position={s.pos} />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-            <div className="glass absolute bottom-28 left-[var(--gutter)] max-w-[min(640px,calc(100%-2*var(--gutter)))] p-6 text-white md:p-10" style={{ background: "rgba(255,255,255,.1)" }}>
+            <div className="glass absolute bottom-28 left-[var(--gutter)] max-w-[min(640px,calc(100%-2*var(--gutter)))] p-6 text-white md:p-10" style={{ background: "rgba(46,66,82,.55)" }}>
               <p className="label mb-5">{String(n + 1).padStart(2, "0")} — {s.label}</p>
-              <h1 className="text-[clamp(56px,10vw,150px)] leading-[0.92]">
+              <h1 className="text-[clamp(44px,6.5vw,104px)] leading-[0.95]">
                 <span className="block overflow-hidden">
                   <span className="block" style={{ transform: active ? "none" : "translateY(110%)", transition: `transform 1.1s var(--ease) ${active ? 0.45 : 0}s` }}>
                     {s.line}

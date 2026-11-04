@@ -17,7 +17,7 @@ export const IMG = {
   boatGalley: i("boat-galley"),
   campStoveRed: i("camp-stove-red"),
   vanPot: i("van-pot"),
-  heroAirFryer: i("hero-air-fryer"),
+  heroAirFryer: i("hero-air-fryer"), heroKettle: i("hero-kettle"), heroLunchbox: i("hero-lunchbox"), heroPan: i("hero-pan"),
   kitchenAirFryer: i("kitchen-air-fryer"),
   kitchenAppliances: i("kitchen-appliances"),
   kettleGlass: i("kettle-glass"),
