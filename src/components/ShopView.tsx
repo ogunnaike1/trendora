@@ -12,18 +12,20 @@ export default function ShopView({ mode }: { mode: "shop" | "wishlist" }) {
   const wishlist = useStore((s) => s.wishlist);
   const [sort, setSort] = useState("featured");
   const category = sp.get("category");
+  const group = sp.get("group");
   const onlyNew = sp.get("new") === "1";
 
   const list = useMemo(() => {
     let l = mode === "wishlist" ? products.filter((p) => wishlist.includes(p.id)) : products;
     if (category) l = l.filter((p) => p.category === category);
+    if (group) l = l.filter((p) => p.group === group);
     if (onlyNew) l = l.filter((p) => p.isNew);
     if (sort === "low") l = [...l].sort((a, b) => effectivePrice(a) - effectivePrice(b));
     if (sort === "high") l = [...l].sort((a, b) => effectivePrice(b) - effectivePrice(a));
     return l;
-  }, [mode, wishlist, category, onlyNew, sort]);
+  }, [mode, wishlist, category, group, onlyNew, sort]);
 
-  const title = mode === "wishlist" ? "Wishlist" : onlyNew ? "New arrivals" : category ?? "All objects";
+  const title = mode === "wishlist" ? "Wishlist" : onlyNew ? "New arrivals" : group ?? category ?? "All objects";
   const setCat = (c: string | null) => router.push(c ? `/shop?category=${encodeURIComponent(c)}` : "/shop");
 
   return (
@@ -37,7 +39,7 @@ export default function ShopView({ mode }: { mode: "shop" | "wishlist" }) {
         <div className="my-8 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
             {[null, ...CATEGORIES].map((c) => {
-              const active = !onlyNew && (c ?? null) === category;
+              const active = !onlyNew && !group && (c ?? null) === category;
               return (
                 <button
                   key={c ?? "all"}

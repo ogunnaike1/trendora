@@ -91,7 +91,7 @@ export default function ProductView({ product: p }: { product: Product }) {
       </div>
 
       <section className="mt-[var(--section-y)]">
-        <h2 className="hairline mb-10 pb-6 text-[clamp(34px,4.5vw,64px)] leading-none">You may also <em>like</em></h2>
+        <h2 className="hairline mb-10 pb-6 text-[clamp(34px,4.5vw,64px)] leading-none">You may also <span className="accent">like</span></h2>
         <div className="grid gap-x-5 gap-y-10 [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))]">
           {related.map((r, n) => <ProductCard key={r.id} product={r} index={n} />)}
         </div>

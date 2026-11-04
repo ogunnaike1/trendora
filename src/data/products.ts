@@ -9,6 +9,9 @@ export type Category =
   | "Candles"
   | "Kitchen";
 
+export type KitchenGroup = "Air Fryers" | "Kettles & Coffee" | "Cookers & Pans" | "Lunch Boxes" | "Ovens";
+export const KITCHEN_GROUPS: KitchenGroup[] = ["Air Fryers", "Kettles & Coffee", "Cookers & Pans", "Lunch Boxes", "Ovens"];
+
 export const CATEGORIES: Category[] = [
   "Lighting",
   "Vases",
@@ -24,6 +27,8 @@ export interface Product {
   slug: string;
   name: string;
   category: Category;
+  /** Sub-group inside Kitchen (used by the homepage category tiles). */
+  group?: KitchenGroup;
   price: number;
   salePrice?: number;
   colors: { name: string; tone: number }[];
@@ -45,91 +50,119 @@ const c = (name: string, tone: number) => ({ name, tone });
 export const products: Product[] = [
   // ── Travel & truck kitchen ───────────────────────────────────────────
   {
-    id: "p13", slug: "24v-electric-air-fryer-2-5l", name: "200W 24V 2.5L Electric Air Fryer", category: "Kitchen", price: 261.99, salePrice: 235.79, badge: "11.11 Sale",
+    id: "p13", group: "Air Fryers", slug: "24v-electric-air-fryer-2-5l", name: "200W 24V 2.5L Electric Air Fryer", category: "Kitchen", price: 261.99, salePrice: 235.79, badge: "11.11 Sale",
     colors: [c("Black", 0.25)],
     materials: "Non-stick coated basket, ABS housing, brushed-effect handle", dimensions: "2.5 L capacity · 200 W · 24 V DC with cigarette-lighter plug",
     description: "Oil-free cooking on the road. This compact 2.5L air fryer runs from a 24V truck socket, so you can cook hot meals while camping, travelling or on long hauls. Simple mechanical timer dial and a pull-out basket.",
     rating: 4.6, reviewCount: 60, stock: 25, images: [IMG.airFryer, IMG.kitchen, IMG.dining, IMG.livingSun], isNew: true, featured: true, createdAt: "2026-11-01",
   },
   {
-    id: "p14", slug: "24v-air-fryer-4l", name: "24V 4L Air Fryer, 250W", category: "Kitchen", price: 199,
+    id: "p14", group: "Air Fryers", slug: "24v-air-fryer-4l", name: "24V 4L Air Fryer, 250W", category: "Kitchen", price: 199,
     colors: [c("Black", 0.25)],
     materials: "Non-stick basket, ABS housing", dimensions: "4 L capacity · 250 W · 24 V DC",
     description: "A larger-capacity travel air fryer with timer and temperature control — enough for a full meal from the cab or campsite.",
     rating: 4.5, reviewCount: 38, stock: 18, images: [IMG.kitchenAirFryer, IMG.kitchenAppliances], isNew: true, featured: false, createdAt: "2026-10-28",
   },
   {
-    id: "p15", slug: "12v-24v-car-air-fryer-3l", name: "12V/24V Portable Air Fryer, 3L", category: "Kitchen", price: 179,
+    id: "p15", group: "Air Fryers", slug: "12v-24v-car-air-fryer-3l", name: "12V/24V Portable Air Fryer, 3L", category: "Kitchen", price: 179,
     colors: [c("Black", 0.25), c("Grey", 0.55)],
     materials: "Non-stick basket, ABS housing", dimensions: "3 L capacity · 250 W · 12 V / 24 V DC",
     description: "Dual-voltage so it works in cars, vans and trucks alike. Compact enough to store in a cupboard between trips.",
-    rating: 4.4, reviewCount: 27, stock: 20, images: [IMG.kitchenAppliances, IMG.kitchenAirFryer], isNew: true, featured: false, createdAt: "2026-10-26",
+    rating: 4.4, reviewCount: 27, stock: 20, images: [IMG.kitchenAppliances, IMG.kitchenAirFryer], isNew: true, featured: true, createdAt: "2026-10-26",
   },
   {
-    id: "p16", slug: "12v-24v-travel-rice-cooker-2l", name: "12V/24V Travel Rice Cooker, 2L", category: "Kitchen", price: 84,
+    id: "p16", group: "Cookers & Pans", slug: "12v-24v-travel-rice-cooker-2l", name: "12V/24V Travel Rice Cooker, 2L", category: "Kitchen", price: 84,
     colors: [c("Steel", 0.7)],
     materials: "Stainless-steel body, non-stick inner pot", dimensions: "2 L capacity · 12 V / 24 V DC",
     description: "Rice, soup, noodles and porridge from a vehicle socket. Mechanical timer with automatic shut-off.",
-    rating: 4.3, reviewCount: 45, stock: 32, images: [IMG.riceCooker, IMG.riceCookerWindow], isNew: false, featured: false, createdAt: "2026-09-12",
+    rating: 4.3, reviewCount: 45, stock: 32, images: [IMG.riceCooker, IMG.riceCookerWindow], isNew: false, featured: true, createdAt: "2026-09-12",
   },
   {
-    id: "p17", slug: "24v-car-electric-kettle-1-2l", name: "24V Car Electric Kettle, 1.2L", category: "Kitchen", price: 46,
+    id: "p17", group: "Kettles & Coffee", slug: "24v-car-electric-kettle-1-2l", name: "24V Car Electric Kettle, 1.2L", category: "Kitchen", price: 46,
     colors: [c("Steel", 0.7), c("Black", 0.25)],
     materials: "Food-grade stainless steel, cigarette-lighter plug", dimensions: "1.2 L capacity · 200 W · 24 V DC",
     description: "Boil water for tea, coffee or instant meals on the move. Heats from a 24V truck socket.",
-    rating: 4.4, reviewCount: 52, stock: 40, images: [IMG.kettleGlass, IMG.kettleSteel, IMG.kettleShelf], isNew: false, featured: false, createdAt: "2026-08-20",
+    rating: 4.4, reviewCount: 52, stock: 40, images: [IMG.kettleGlass, IMG.kettleSteel, IMG.kettleShelf], isNew: false, featured: true, createdAt: "2026-08-20",
   },
   {
-    id: "p18", slug: "12v-24v-electric-lunch-box", name: "12V/24V Electric Lunch Box, 80W", category: "Kitchen", price: 39,
+    id: "p18", group: "Lunch Boxes", slug: "12v-24v-electric-lunch-box", name: "12V/24V Electric Lunch Box, 80W", category: "Kitchen", price: 39,
     colors: [c("Grey", 0.55)],
     materials: "Stainless-steel liner, insulated carry bag", dimensions: "1.5 L capacity · 80 W · 12 V / 24 V DC",
     description: "Warm yesterday's dinner at your desk or in the cab. Works on 12V and 24V vehicle sockets.",
     rating: 4.2, reviewCount: 71, stock: 55, images: [IMG.lunchbox, IMG.lunchbox2, IMG.lunchbox3], isNew: false, featured: false, createdAt: "2026-07-30",
   },
   {
-    id: "p19", slug: "24v-electric-frying-pan", name: "24V Electric Frying Pan, 250W", category: "Kitchen", price: 52,
+    id: "p19", group: "Cookers & Pans", slug: "24v-electric-frying-pan", name: "24V Electric Frying Pan, 250W", category: "Kitchen", price: 52,
     colors: [c("Black", 0.25)],
     materials: "Non-stick aluminium, heat-resistant handle", dimensions: "Ø 20 cm · 250 W · 24 V DC",
     description: "A compact pan that plugs into a truck socket — eggs, sausages and stir-fries wherever you park.",
     rating: 4.1, reviewCount: 22, stock: 28, images: [IMG.pan1, IMG.pan2, IMG.panEgg], isNew: false, featured: false, createdAt: "2026-07-05",
   },
   {
-    id: "p20", slug: "24v-mini-toaster-oven-12l", name: "24V Mini Oven, 12L", category: "Kitchen", price: 129,
+    id: "p26", group: "Lunch Boxes", slug: "24v-stainless-electric-lunch-box", name: "24V Stainless Electric Lunch Box, 1.5L", category: "Kitchen", price: 49,
+    colors: [c("Steel", 0.7)],
+    materials: "Stainless-steel liner, removable tray", dimensions: "1.5 L capacity · 60 W · 24 V DC",
+    description: "Heats leftovers on the road. Removable steel tray, easy to clean, plugs into a 24V truck socket.",
+    rating: 4.3, reviewCount: 36, stock: 38, images: [IMG.lunchbox2, IMG.lunchbox], isNew: true, featured: false, createdAt: "2026-10-27",
+  },
+  {
+    id: "p27", group: "Lunch Boxes", slug: "dual-voltage-food-warmer-box", name: "12V/24V Food Warmer Box, 2-Compartment", category: "Kitchen", price: 44,
+    colors: [c("Grey", 0.55)],
+    materials: "Food-grade PP, stainless-steel inserts", dimensions: "1.0 L · 48 W · 12 V / 24 V DC",
+    description: "Two compartments keep rice and mains apart while they warm. Works in cars and trucks.",
+    rating: 4.1, reviewCount: 24, stock: 42, images: [IMG.lunchbox3, IMG.lunchbox2], isNew: false, featured: false, createdAt: "2026-08-09",
+  },
+  {
+    id: "p28", group: "Ovens", slug: "12v-portable-convection-oven-10l", name: "12V Portable Oven, 10L", category: "Kitchen", price: 138,
+    colors: [c("Cream", 0.86)],
+    materials: "Enamelled steel cavity, tempered-glass door", dimensions: "10 L capacity · 150 W · 12 V DC",
+    description: "A compact oven for reheating and baking small trays in a van or camper.",
+    rating: 4.2, reviewCount: 15, stock: 12, images: [IMG.ovenVan, IMG.vanBlack], isNew: true, featured: false, createdAt: "2026-10-20",
+  },
+  {
+    id: "p29", group: "Ovens", slug: "24v-toaster-oven-14l", name: "24V Toaster Oven, 14L", category: "Kitchen", price: 159,
+    colors: [c("Black", 0.25)],
+    materials: "Steel cavity, 2 racks included", dimensions: "14 L capacity · 300 W · 24 V DC",
+    description: "Toast, bake and warm for the cab. Two racks and a crumb tray included.",
+    rating: 4.4, reviewCount: 21, stock: 10, images: [IMG.toasterOvens, IMG.ovenVan], isNew: false, featured: false, createdAt: "2026-09-02",
+  },
+  {
+    id: "p20", group: "Ovens", slug: "24v-mini-toaster-oven-12l", name: "24V Mini Oven, 12L", category: "Kitchen", price: 129,
     colors: [c("Cream", 0.86), c("Blush", 0.72)],
     materials: "Enamelled steel interior, tempered-glass door", dimensions: "12 L capacity · 300 W · 24 V DC",
     description: "A compact oven for toasting, reheating and baking small trays — sized to fit a truck cab or camper counter.",
     rating: 4.3, reviewCount: 18, stock: 14, images: [IMG.toasterOvens, IMG.kitchenAppliances], isNew: true, featured: false, createdAt: "2026-10-30",
   },
   {
-    id: "p21", slug: "12v-travel-coffee-maker", name: "12V Travel Coffee Maker", category: "Kitchen", price: 64,
+    id: "p21", group: "Kettles & Coffee", slug: "12v-travel-coffee-maker", name: "12V Travel Coffee Maker", category: "Kitchen", price: 64,
     colors: [c("Black", 0.25), c("White", 0.9)],
     materials: "BPA-free tank, glass carafe, reusable filter", dimensions: "0.6 L carafe · 120 W · 12 V DC",
     description: "Brew a fresh pot at the first rest stop. Drip coffee maker with a reusable filter and a small footprint.",
-    rating: 4.2, reviewCount: 33, stock: 26, images: [IMG.coffeeMaker, IMG.kitchenAppliances], isNew: false, featured: false, createdAt: "2026-09-18",
+    rating: 4.2, reviewCount: 33, stock: 26, images: [IMG.coffeeMaker, IMG.kitchenAppliances], isNew: true, featured: false, createdAt: "2026-09-18",
   },
   {
-    id: "p22", slug: "portable-espresso-maker", name: "Portable Espresso Maker", category: "Kitchen", price: 72,
+    id: "p22", group: "Kettles & Coffee", slug: "portable-espresso-maker", name: "Portable Espresso Maker", category: "Kitchen", price: 72,
     colors: [c("Graphite", 0.3)],
     materials: "Aluminium body, stainless-steel filter", dimensions: "Ø 7 cm × H 19 cm · hand-pump",
     description: "A hand-pumped espresso maker for campsites and cabs. No power needed — just hot water and ground coffee.",
-    rating: 4.6, reviewCount: 94, stock: 35, images: [IMG.espresso, IMG.campGear], isNew: false, featured: false, createdAt: "2026-08-02",
+    rating: 4.6, reviewCount: 94, stock: 35, images: [IMG.espresso, IMG.campGear], isNew: false, featured: true, createdAt: "2026-08-02",
   },
   {
-    id: "p23", slug: "12v-24v-travel-kettle-0-8l", name: "12V/24V Travel Kettle, 0.8L", category: "Kitchen", price: 38,
+    id: "p23", group: "Kettles & Coffee", slug: "12v-24v-travel-kettle-0-8l", name: "12V/24V Travel Kettle, 0.8L", category: "Kitchen", price: 38,
     colors: [c("Black", 0.25)],
     materials: "Stainless steel, silicone grip", dimensions: "0.8 L capacity · 150 W · 12 V / 24 V DC",
     description: "A slim gooseneck kettle that runs from either socket voltage — ideal for pour-over coffee and tea on the go.",
     rating: 4.3, reviewCount: 41, stock: 44, images: [IMG.kettleBlack, IMG.kettleShelf], isNew: false, featured: false, createdAt: "2026-08-14",
   },
   {
-    id: "p24", slug: "24v-electric-multi-cooker-3l", name: "24V Electric Multi Cooker, 3L", category: "Kitchen", price: 118,
+    id: "p24", group: "Cookers & Pans", slug: "24v-electric-multi-cooker-3l", name: "24V Electric Multi Cooker, 3L", category: "Kitchen", price: 118,
     colors: [c("Steel", 0.7)],
     materials: "Stainless-steel exterior, non-stick inner pot", dimensions: "3 L capacity · 200 W · 24 V DC",
     description: "Steam, stew and simmer from a truck socket. One pot for rice, soups and one-pan meals.",
-    rating: 4.4, reviewCount: 29, stock: 17, images: [IMG.multiCooker, IMG.riceCooker], isNew: true, featured: false, createdAt: "2026-10-24",
+    rating: 4.4, reviewCount: 29, stock: 17, images: [IMG.multiCooker, IMG.riceCooker], isNew: true, featured: true, createdAt: "2026-10-24",
   },
   {
-    id: "p25", slug: "camping-stove-and-kettle-set", name: "Compact Camp Stove & Kettle Set", category: "Kitchen", price: 96,
+    id: "p25", group: "Cookers & Pans", slug: "camping-stove-and-kettle-set", name: "Compact Camp Stove & Kettle Set", category: "Kitchen", price: 96,
     colors: [c("Steel", 0.7)],
     materials: "Stainless steel, folding wood-burning stove", dimensions: "Packed H 18 cm × Ø 12 cm",
     description: "A folding wood-burning stove with a matching kettle. Packs flat, boils water in minutes and needs no fuel canister.",

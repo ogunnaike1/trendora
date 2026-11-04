@@ -10,18 +10,18 @@ import { useReducedMotion } from "@/lib/hooks";
 import { useStore } from "@/store/useStore";
 
 const CATS = [
-  { name: "Lighting", n: 8, col: "1 / span 5", ratio: "4/5", mt: 0, img: IMG.lampGrey },
-  { name: "Vases", n: 12, col: "6 / span 3", ratio: "3/4", mt: 90, img: IMG.pampas },
-  { name: "Textiles", n: 14, col: "9 / span 4", ratio: "4/5", mt: 30, img: IMG.textures },
-  { name: "Candles", n: 9, col: "2 / span 4", ratio: "1/1", mt: 0, img: IMG.candles2 },
-  { name: "Tableware", n: 16, col: "7 / span 5", ratio: "5/4", mt: -60, img: IMG.kitchen },
-];
+  { name: "Air Fryers", col: "1 / span 5", ratio: "4/5", mt: 0, img: IMG.airFryer },
+  { name: "Kettles & Coffee", col: "6 / span 3", ratio: "3/4", mt: 90, img: IMG.kettleGlass },
+  { name: "Cookers & Pans", col: "9 / span 4", ratio: "4/5", mt: 30, img: IMG.multiCooker },
+  { name: "Lunch Boxes", col: "2 / span 4", ratio: "1/1", mt: 0, img: IMG.lunchbox },
+  { name: "Ovens", col: "7 / span 5", ratio: "5/4", mt: -60, img: IMG.toasterOvens },
+] as const;
 const FEATURED_ID = "p13";
 const ROOMS = [
-  ["Living Room", IMG.livingLight], ["Bedroom", IMG.bedroom], ["Dining Room", IMG.dining],
-  ["Kitchen", IMG.kitchen], ["Home Office", IMG.office], ["Bathroom", IMG.bathroom],
+  ["Truck Cab", IMG.truckCab], ["Camper Van", IMG.vanYellow], ["Campsite", IMG.campTable],
+  ["Long Haul", IMG.roadTruck], ["Boat Galley", IMG.boatGalley], ["Van Kitchen", IMG.vanCooking],
 ] as const;
-const SOCIAL = [IMG.sofaGreen, IMG.shelves, IMG.candles, IMG.mirrors, IMG.yellowChair, IMG.livingWide];
+const SOCIAL = [IMG.airFryer, IMG.kettleGlass, IMG.lunchbox, IMG.campStoveRed, IMG.toasterOvens, IMG.vanBlack];
 
 function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -92,8 +92,8 @@ export default function Home() {
     return () => { window.removeEventListener("scroll", on); window.removeEventListener("resize", on); cancelAnimationFrame(raf); };
   }, [reduced]);
 
-  const bestsellers = products.filter((p) => p.featured).slice(0, 4);
-  const arrivals = products.filter((p) => p.isNew && p.id !== FEATURED_ID).slice(0, 4);
+  const bestsellers = products.filter((p) => p.category === "Kitchen" && p.featured).slice(0, 4);
+  const arrivals = products.filter((p) => p.category === "Kitchen" && p.isNew && p.id !== FEATURED_ID).slice(0, 4);
   const featured = products.find((p) => p.id === FEATURED_ID)!;
 
   return (
@@ -119,24 +119,24 @@ export default function Home() {
       {/* Categories */}
       <section id="categories" className="section gutter">
         <div className="reveal mb-16 flex flex-wrap items-end justify-between gap-6">
-          <h2 className="text-[clamp(44px,7vw,104px)] leading-[0.95]">Shop by <em>category</em></h2>
-          <p className="max-w-[300px] text-[15px]">Five edits of the objects that quietly make a house feel like a home.</p>
+          <h2 className="text-[clamp(44px,7vw,104px)] leading-[0.95]">Shop by <span className="accent">category</span></h2>
+          <p className="max-w-[300px] text-[15px]">Five groups of compact 12V and 24V appliances for the truck, the van and the campsite.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-12">
           {CATS.map((c, n) => (
             <Link
               key={c.name}
-              href={`/shop?category=${c.name}`}
+              href={`/shop?group=${encodeURIComponent(c.name)}`}
               className="reveal group block md:[grid-column:var(--col)] md:[margin-top:var(--mt)]"
               style={{ ["--col" as string]: c.col, ["--mt" as string]: `${c.mt}px`, ["--i" as string]: n }}
             >
               <div className="relative overflow-hidden" style={{ aspectRatio: c.ratio }}>
                 <div className="absolute inset-0 transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105"><Photo src={c.img} alt={c.name} sizes="(min-width: 768px) 40vw, 100vw" /></div>
-                <span className="glass label absolute bottom-4 left-4 px-3 py-1 text-white">Collection</span>
+                <span className="glass label absolute bottom-4 left-4 px-3 py-1 text-white">Travel kitchen</span>
               </div>
               <div className="mt-3 flex items-baseline justify-between border-b border-slate pb-2">
                 <span className="serif text-[28px]">{c.name}</span>
-                <span className="label">{c.n} pieces →</span>
+                <span className="label">{products.filter((p) => p.group === c.name).length} pieces →</span>
               </div>
             </Link>
           ))}
@@ -145,7 +145,7 @@ export default function Home() {
 
       {/* Bestsellers */}
       <section className="gutter pb-[var(--section-y)]">
-        <SectionHead title={<>The considered <em>edit</em></>} link={["View all", "/shop"]} />
+        <SectionHead title={<>The considered <span className="accent">edit</span></>} link={["View all", "/shop"]} />
         <div className="grid gap-x-5 gap-y-10 [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))]">
           {bestsellers.map((p, n) => <ProductCard key={p.id} product={p} index={n} />)}
         </div>
@@ -155,15 +155,15 @@ export default function Home() {
       <section id="story" data-bg="stone" className="section gutter bg-stone/0">
         <div className="grid items-center gap-10 md:grid-cols-12">
           <div className="relative md:col-span-6">
-            <div className="mask-reveal aspect-[4/5] overflow-hidden"><Photo src={IMG.livingSun} alt="A calm, light-filled living room" sizes="(min-width: 768px) 50vw, 100vw" /></div>
+            <div className="mask-reveal aspect-[4/5] overflow-hidden"><Photo src={IMG.vanYellow} alt="A camper van with a kettle on the counter" sizes="(min-width: 768px) 50vw, 100vw" /></div>
             <div className="absolute -bottom-10 right-0 w-[46%] border-[10px] border-stone">
-              <div data-parallax="-0.14" className="aspect-square will-change-transform"><Photo src={IMG.pampas} sizes="25vw" /></div>
+              <div data-parallax="-0.14" className="aspect-square will-change-transform"><Photo src={IMG.campStoveRed} sizes="25vw" /></div>
             </div>
           </div>
           <div className="glass reveal p-8 md:col-span-6 md:-ml-[6%] md:p-14" style={{ background: "rgba(255,255,255,.5)", color: "var(--slate)" }}>
             <p className="label mb-6 text-mist">Our philosophy</p>
-            <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">Objects that make a space feel like <em>yours.</em></h2>
-            <p className="mt-6 max-w-[520px] text-[16px]">We work with small studios to bring you pieces that are honest in material and quiet in form — made to be lived with, not just looked at.</p>
+            <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">Appliances that make any space feel like <span className="accent">home.</span></h2>
+            <p className="mt-6 max-w-[520px] text-[16px]">We find compact 12V and 24V appliances that make hot, proper meals possible in a truck cab, camper van or campsite — simple to use and built to last.</p>
             <div className="mt-10 flex gap-14">
               <div><p className="serif text-6xl"><CountUp to={42} /></p><p className="label">Partner studios</p></div>
               <div><p className="serif text-6xl"><CountUp to={100} suffix="%" /></p><p className="label">Natural materials</p></div>
@@ -175,10 +175,10 @@ export default function Home() {
       {/* Shop by room — pinned horizontal scroll */}
       <section ref={roomWrap} className="relative bg-slate text-white" style={{ height: reduced ? "auto" : "340vh" }}>
         <div className={reduced ? "py-20" : "sticky top-0 flex h-screen flex-col justify-center overflow-hidden"}>
-          <h2 className="gutter mb-10 text-[clamp(44px,7vw,104px)] leading-[0.95]">Shop by <em>room</em></h2>
+          <h2 className="gutter mb-10 text-[clamp(44px,7vw,104px)] leading-[0.95]">Shop by <span className="accent">journey</span></h2>
           <div ref={trackRef} className={`flex gap-6 gutter will-change-transform ${reduced ? "overflow-x-auto" : ""}`}>
             {ROOMS.map(([r, src], n) => (
-              <Link key={r} href="/shop" className="group relative shrink-0 aspect-[3/4] w-[clamp(220px,24vw,360px)]" style={{ marginTop: n % 2 ? 60 : 0 }}>
+              <Link key={r} href="/shop?category=Kitchen" className="group relative shrink-0 aspect-[3/4] w-[clamp(220px,24vw,360px)]" style={{ marginTop: n % 2 ? 60 : 0 }}>
                 <div className="absolute inset-0 overflow-hidden"><div className="h-full transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105"><Photo src={src} alt={r} sizes="360px" /></div></div>
                 <span className="glass label absolute bottom-4 left-4 px-3 py-2">{String(n + 1).padStart(2, "0")} / {r}</span>
               </Link>
@@ -189,7 +189,7 @@ export default function Home() {
 
       {/* New arrivals */}
       <section className="section gutter">
-        <SectionHead title={<>New <em>arrivals</em></>} link={["See all new", "/shop?new=1"]} />
+        <SectionHead title={<>New <span className="accent">arrivals</span></>} link={["See all new", "/shop?new=1"]} />
         <div className="grid gap-x-5 gap-y-10 [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))]">
           {arrivals.map((p, n) => <ProductCard key={p.id} product={{ ...p, badge: "New" }} index={n} />)}
         </div>
@@ -208,7 +208,7 @@ export default function Home() {
           </Link>
           <div className="reveal md:col-span-5 md:col-start-8">
             <p className="label mb-6 text-mist">The travel kitchen</p>
-            <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">Hot meals, wherever the <em>road</em> goes.</h2>
+            <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">Hot meals, wherever the <span className="accent">road</span> goes.</h2>
             <p className="mt-6 max-w-[480px] text-[16px]">{featured.description}</p>
             <p className="serif mt-8 text-3xl">
               {featured.salePrice && <s className="mr-3 text-xl text-mist">{fmt(featured.price)}</s>}
@@ -225,11 +225,11 @@ export default function Home() {
 
       {/* Feature banner */}
       <section className="relative grid h-[90vh] max-h-[780px] place-items-center overflow-hidden">
-        <div data-parallax="0.22" className="absolute -inset-[15%] will-change-transform"><Photo src={IMG.livingWide} alt="The Autumn Collection" sizes="100vw" /></div>
+        <div data-parallax="0.22" className="absolute -inset-[15%] will-change-transform"><Photo src={IMG.roadTruck} alt="A truck on an open highway" sizes="100vw" /></div>
         <div className="glass reveal relative mx-[var(--gutter)] max-w-[620px] p-8 text-center text-white md:p-14">
-          <p className="label mb-4">The Autumn Collection</p>
-          <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">The art of a <em className="!text-white/80">considered</em> home.</h2>
-          <Link href="/shop" className="btn btn-white mt-8">Explore the collection</Link>
+          <p className="label mb-4">The Road Collection</p>
+          <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">Home comforts, built for the <span className="accent !text-white/80">road.</span></h2>
+          <Link href="/shop?category=Kitchen" className="btn btn-white mt-8">Shop the travel kitchen</Link>
         </div>
       </section>
 
@@ -237,9 +237,9 @@ export default function Home() {
       <section className="section gutter">
         <div className="grid gap-10 md:grid-cols-3">
           {[
-            ["The Arca vase is even lovelier in person — it's changed how our hallway feels.", "Imogen R.", "London"],
-            ["Beautifully packed, beautifully made. The Nube throw lives on our sofa now.", "Daniel K.", "Berlin"],
-            ["Everything I've bought has felt quietly special. Trendora has become my first stop.", "Sofia M.", "Lisbon"],
+            ["The 24V air fryer changed my nights on the road — proper hot meals from the cab.", "Imogen R.", "London"],
+            ["Compact, quiet and well made. The travel kettle goes in the van on every trip.", "Daniel K.", "Berlin"],
+            ["Fast delivery and exactly as described. Trendora is my first stop for road kit.", "Sofia M.", "Lisbon"],
           ].map(([q, n, c], i) => (
             <figure key={n} className="reveal border-t border-slate pt-6 md:[margin-top:var(--mt)]" style={{ ["--mt" as string]: i === 1 ? "40px" : "0", ["--i" as string]: i }}>
               <blockquote className="serif text-[26px] leading-snug">“{q}”</blockquote>

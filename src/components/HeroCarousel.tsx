@@ -6,10 +6,10 @@ import { IMG } from "@/data/images";
 import { useReducedMotion } from "@/lib/hooks";
 
 const SLIDES = [
-  { label: "The Quiet Living Room", line: "Make room for better living.", sub: "Soft textures and quiet forms for the room you return to every evening.", img: IMG.livingSun },
-  { label: "Evening Light", line: "Light, held low and warm.", sub: "Lamps and candles that turn the end of the day into a ritual.", img: IMG.candles },
-  { label: "Table Rituals", line: "Set the table slowly.", sub: "Stoneware and brass made for long dinners and slow mornings.", img: IMG.dining },
-  { label: "New Season Textures", line: "Wool, linen, and clay.", sub: "Natural materials in an autumn palette, freshly arrived.", img: IMG.textures },
+  { label: "The Travel Kitchen", line: "Hot meals, wherever the road goes.", sub: "The 24V 2.5L air fryer — oil-free cooking from your truck socket.", img: IMG.heroAirFryer, href: "/products/24v-electric-air-fryer-2-5l", cta: "Shop the air fryer", pos: "center" },
+  { label: "Long Haul Essentials", line: "Better lunches on the long road.", sub: "Electric lunch boxes, kettles and cookers built for 12V and 24V.", img: IMG.roadTruck, href: "/shop?group=Lunch%20Boxes", cta: "Shop lunch boxes", pos: "center" },
+  { label: "Camper & Van Life", line: "Brew, boil and bake anywhere.", sub: "Compact kettles, coffee makers and camp stoves for life on wheels.", img: IMG.vanYellow, href: "/shop?group=Kettles%20%26%20Coffee", cta: "Shop kettles & coffee", pos: "center 40%" },
+  { label: "Compact Ovens", line: "A little oven for a small space.", sub: "Toaster and convection ovens sized for the cab and the camper.", img: IMG.ovenVan, href: "/shop?group=Ovens", cta: "Shop ovens", pos: "center" },
 ];
 const DURATION = 6500;
 
@@ -74,7 +74,7 @@ export default function HeroCarousel() {
             }}
           >
             <div className="absolute inset-0" style={{ animation: active && !reduced ? "kenburns 9s linear forwards" : undefined }}>
-              <Photo src={s.img} alt={s.label} sizes="100vw" priority={n === 0} />
+              <Photo src={s.img} alt={s.label} sizes="100vw" priority={n === 0} position={s.pos} />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
             <div className="glass absolute bottom-28 left-[var(--gutter)] max-w-[min(640px,calc(100%-2*var(--gutter)))] p-6 text-white md:p-10" style={{ background: "rgba(255,255,255,.1)" }}>
@@ -88,7 +88,7 @@ export default function HeroCarousel() {
               </h1>
               <p className="mt-5 max-w-[440px] text-[15px] md:text-[17px]" style={{ opacity: active ? 1 : 0, transition: `opacity 1s var(--ease) ${active ? 0.9 : 0}s` }}>{s.sub}</p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link href="/shop" className="btn btn-white" tabIndex={active ? 0 : -1}>Shop collection</Link>
+                <Link href={s.href} className="btn btn-white" tabIndex={active ? 0 : -1}>{s.cta}</Link>
                 <a href="#story" className="btn btn-outline" tabIndex={active ? 0 : -1}>Explore</a>
               </div>
             </div>
