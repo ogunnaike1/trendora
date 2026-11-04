@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import Placeholder from "./Placeholder";
+import Photo from "./Photo";
 import { effectivePrice, fmt, type Product } from "@/data/products";
 import { useStore } from "@/store/useStore";
 
@@ -15,10 +15,10 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
       <div className="relative aspect-[4/5] overflow-hidden bg-stone">
         <Link href={href} aria-label={product.name} className="absolute inset-0 block">
           <div className="absolute inset-0 transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105">
-            <Placeholder tone={product.images[0]} label={product.name} />
+            <Photo src={product.images[0]} alt={product.name} sizes="(min-width: 1024px) 25vw, 50vw" />
           </div>
           <div className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
-            <Placeholder tone={product.images[1]} />
+            <Photo src={product.images[1]} sizes="(min-width: 1024px) 25vw, 50vw" />
           </div>
         </Link>
         {product.badge && <span className="glass label absolute left-3 top-3 px-3 py-1 text-white">{product.badge}</span>}

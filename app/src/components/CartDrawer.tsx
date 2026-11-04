@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect } from "react";
-import Placeholder from "./Placeholder";
+import Photo from "./Photo";
 import { useStore, useCartTotals, FREE_SHIPPING_THRESHOLD } from "@/store/useStore";
 import { effectivePrice, fmt, getProduct } from "@/data/products";
 
@@ -18,7 +18,7 @@ export function CartLines() {
         return (
           <li key={l.productId + l.color} className="flex gap-4 py-5">
             <Link href={`/products/${p.slug}`} className="block h-[84px] w-[84px] shrink-0 overflow-hidden">
-              <Placeholder tone={p.images[0]} label={p.name} />
+              <Photo src={p.images[0]} alt={p.name} sizes="84px" />
             </Link>
             <div className="flex flex-1 flex-col">
               <div className="flex justify-between gap-3">

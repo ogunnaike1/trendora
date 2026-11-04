@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import Placeholder from "./Placeholder";
+import Photo from "./Photo";
 import ProductCard from "./ProductCard";
 import { effectivePrice, fmt, products, type Product } from "@/data/products";
 import { useStore } from "@/store/useStore";
@@ -32,11 +32,11 @@ export default function ProductView({ product: p }: { product: Product }) {
           <div className="flex w-[72px] shrink-0 flex-col gap-3">
             {p.images.map((t, n) => (
               <button key={n} onClick={() => setImg(n)} aria-label={`Image ${n + 1}`} aria-current={n === img} className={`aspect-square overflow-hidden transition-opacity ${n === img ? "outline outline-1 outline-offset-2 outline-slate" : "opacity-70 hover:opacity-100"}`}>
-                <Placeholder tone={t} />
+                <Photo src={t} sizes="72px" />
               </button>
             ))}
           </div>
-          <div className="aspect-[4/5] flex-1 overflow-hidden"><Placeholder tone={p.images[img]} label={`${p.name} image ${img + 1}`} /></div>
+          <div className="aspect-[4/5] flex-1 overflow-hidden"><Photo src={p.images[img]} alt={`${p.name} image ${img + 1}`} sizes="(min-width: 1024px) 45vw, 100vw" priority /></div>
         </div>
 
         <div className="max-w-[520px]">

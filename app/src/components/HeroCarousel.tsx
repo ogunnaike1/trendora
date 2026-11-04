@@ -1,14 +1,15 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Placeholder from "./Placeholder";
+import Photo from "./Photo";
+import { IMG } from "@/data/images";
 import { useReducedMotion } from "@/lib/hooks";
 
 const SLIDES = [
-  { label: "The Quiet Living Room", line: "Make room for better living.", sub: "Soft textures and quiet forms for the room you return to every evening.", tone: 0.5 },
-  { label: "Evening Light", line: "Light, held low and warm.", sub: "Lamps and candles that turn the end of the day into a ritual.", tone: 0.4 },
-  { label: "Table Rituals", line: "Set the table slowly.", sub: "Stoneware and brass made for long dinners and slow mornings.", tone: 0.62 },
-  { label: "New Season Textures", line: "Wool, linen, and clay.", sub: "Natural materials in an autumn palette, freshly arrived.", tone: 0.34 },
+  { label: "The Quiet Living Room", line: "Make room for better living.", sub: "Soft textures and quiet forms for the room you return to every evening.", img: IMG.livingSun },
+  { label: "Evening Light", line: "Light, held low and warm.", sub: "Lamps and candles that turn the end of the day into a ritual.", img: IMG.candles },
+  { label: "Table Rituals", line: "Set the table slowly.", sub: "Stoneware and brass made for long dinners and slow mornings.", img: IMG.dining },
+  { label: "New Season Textures", line: "Wool, linen, and clay.", sub: "Natural materials in an autumn palette, freshly arrived.", img: IMG.textures },
 ];
 const DURATION = 6500;
 
@@ -73,7 +74,7 @@ export default function HeroCarousel() {
             }}
           >
             <div className="absolute inset-0" style={{ animation: active && !reduced ? "kenburns 9s linear forwards" : undefined }}>
-              <Placeholder tone={s.tone} label={s.label} />
+              <Photo src={s.img} alt={s.label} sizes="100vw" priority={n === 0} />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
             <div className="glass absolute bottom-28 left-[var(--gutter)] max-w-[min(640px,calc(100%-2*var(--gutter)))] p-6 text-white md:p-10" style={{ background: "rgba(255,255,255,.1)" }}>

@@ -3,19 +3,24 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import HeroCarousel from "./HeroCarousel";
 import ProductCard from "./ProductCard";
-import Placeholder from "./Placeholder";
+import Photo from "./Photo";
+import { IMG } from "@/data/images";
 import { products } from "@/data/products";
 import { useReducedMotion } from "@/lib/hooks";
 import { useStore } from "@/store/useStore";
 
 const CATS = [
-  { name: "Lighting", n: 8, col: "1 / span 5", ratio: "4/5", mt: 0, tone: 0.42 },
-  { name: "Vases", n: 12, col: "6 / span 3", ratio: "3/4", mt: 90, tone: 0.7 },
-  { name: "Textiles", n: 14, col: "9 / span 4", ratio: "4/5", mt: 30, tone: 0.55 },
-  { name: "Candles", n: 9, col: "2 / span 4", ratio: "1/1", mt: 0, tone: 0.62 },
-  { name: "Tableware", n: 16, col: "7 / span 5", ratio: "5/4", mt: -60, tone: 0.48 },
+  { name: "Lighting", n: 8, col: "1 / span 5", ratio: "4/5", mt: 0, img: IMG.lampGrey },
+  { name: "Vases", n: 12, col: "6 / span 3", ratio: "3/4", mt: 90, img: IMG.pampas },
+  { name: "Textiles", n: 14, col: "9 / span 4", ratio: "4/5", mt: 30, img: IMG.textures },
+  { name: "Candles", n: 9, col: "2 / span 4", ratio: "1/1", mt: 0, img: IMG.candles2 },
+  { name: "Tableware", n: 16, col: "7 / span 5", ratio: "5/4", mt: -60, img: IMG.kitchen },
 ];
-const ROOMS = ["Living Room", "Bedroom", "Dining Room", "Kitchen", "Home Office", "Bathroom"];
+const ROOMS = [
+  ["Living Room", IMG.livingLight], ["Bedroom", IMG.bedroom], ["Dining Room", IMG.dining],
+  ["Kitchen", IMG.kitchen], ["Home Office", IMG.office], ["Bathroom", IMG.bathroom],
+] as const;
+const SOCIAL = [IMG.sofaGreen, IMG.shelves, IMG.candles, IMG.mirrors, IMG.yellowChair, IMG.livingWide];
 
 function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -124,7 +129,7 @@ export default function Home() {
               style={{ ["--col" as string]: c.col, ["--mt" as string]: `${c.mt}px`, ["--i" as string]: n }}
             >
               <div className="relative overflow-hidden" style={{ aspectRatio: c.ratio }}>
-                <div className="absolute inset-0 transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105"><Placeholder tone={c.tone} /></div>
+                <div className="absolute inset-0 transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105"><Photo src={c.img} alt={c.name} sizes="(min-width: 768px) 40vw, 100vw" /></div>
                 <span className="glass label absolute bottom-4 left-4 px-3 py-1 text-white">Collection</span>
               </div>
               <div className="mt-3 flex items-baseline justify-between border-b border-slate pb-2">
@@ -148,9 +153,9 @@ export default function Home() {
       <section id="story" data-bg="stone" className="section gutter bg-stone/0">
         <div className="grid items-center gap-10 md:grid-cols-12">
           <div className="relative md:col-span-6">
-            <div className="mask-reveal aspect-[4/5] overflow-hidden"><Placeholder tone={0.66} label="Studio interior" /></div>
+            <div className="mask-reveal aspect-[4/5] overflow-hidden"><Photo src={IMG.livingSun} alt="A calm, light-filled living room" sizes="(min-width: 768px) 50vw, 100vw" /></div>
             <div className="absolute -bottom-10 right-0 w-[46%] border-[10px] border-stone">
-              <div data-parallax="-0.14" className="aspect-square will-change-transform"><Placeholder tone={0.5} /></div>
+              <div data-parallax="-0.14" className="aspect-square will-change-transform"><Photo src={IMG.pampas} sizes="25vw" /></div>
             </div>
           </div>
           <div className="glass reveal p-8 md:col-span-6 md:-ml-[6%] md:p-14" style={{ background: "rgba(255,255,255,.5)", color: "var(--slate)" }}>
@@ -170,9 +175,9 @@ export default function Home() {
         <div className={reduced ? "py-20" : "sticky top-0 flex h-screen flex-col justify-center overflow-hidden"}>
           <h2 className="gutter mb-10 text-[clamp(44px,7vw,104px)] leading-[0.95]">Shop by <em>room</em></h2>
           <div ref={trackRef} className={`flex gap-6 gutter will-change-transform ${reduced ? "overflow-x-auto" : ""}`}>
-            {ROOMS.map((r, n) => (
+            {ROOMS.map(([r, src], n) => (
               <Link key={r} href="/shop" className="group relative shrink-0 aspect-[3/4] w-[clamp(220px,24vw,360px)]" style={{ marginTop: n % 2 ? 60 : 0 }}>
-                <div className="absolute inset-0 overflow-hidden"><div className="h-full transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105"><Placeholder tone={0.3 + (n % 3) * 0.08} /></div></div>
+                <div className="absolute inset-0 overflow-hidden"><div className="h-full transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105"><Photo src={src} alt={r} sizes="360px" /></div></div>
                 <span className="glass label absolute bottom-4 left-4 px-3 py-2">{String(n + 1).padStart(2, "0")} / {r}</span>
               </Link>
             ))}
@@ -190,7 +195,7 @@ export default function Home() {
 
       {/* Feature banner */}
       <section className="relative grid h-[90vh] max-h-[780px] place-items-center overflow-hidden">
-        <div data-parallax="0.22" className="absolute -inset-[15%] will-change-transform"><Placeholder tone={0.44} /></div>
+        <div data-parallax="0.22" className="absolute -inset-[15%] will-change-transform"><Photo src={IMG.livingWide} alt="The Autumn Collection" sizes="100vw" /></div>
         <div className="glass reveal relative mx-[var(--gutter)] max-w-[620px] p-8 text-center text-white md:p-14">
           <p className="label mb-4">The Autumn Collection</p>
           <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">The art of a <em className="!text-white/80">considered</em> home.</h2>
@@ -241,8 +246,8 @@ export default function Home() {
           <a href="#" className="link-arrow">Follow →</a>
         </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-6">
-          {Array.from({ length: 6 }, (_, n) => (
-            <div key={n} className="reveal aspect-square overflow-hidden" style={{ ["--i" as string]: n }}><Placeholder tone={0.4 + (n % 4) * 0.1} /></div>
+          {SOCIAL.map((src, n) => (
+            <div key={n} className="reveal aspect-square overflow-hidden" style={{ ["--i" as string]: n }}><Photo src={src} alt="" sizes="(min-width: 768px) 17vw, 50vw" /></div>
           ))}
         </div>
       </section>
