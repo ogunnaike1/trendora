@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoMark } from "./Logo";
 
 const COLS = [
   { title: "Shop", links: [["All objects", "/shop"], ["New arrivals", "/shop?new=1"], ["Lighting", "/shop?category=Lighting"], ["Vases", "/shop?category=Vases"], ["Textiles", "/shop?category=Textiles"]] },
@@ -9,7 +10,10 @@ const COLS = [
 export default function Footer() {
   return (
     <footer className="bg-slate text-stone gutter pt-24 pb-8">
-      <p className="serif text-[clamp(56px,16vw,240px)] leading-[0.85] tracking-[0.06em]">TRENDORA</p>
+      <div className="flex items-end gap-[3vw]">
+        <LogoMark size={0} className="h-[clamp(56px,12vw,180px)] w-auto shrink-0" />
+        <p className="serif text-[clamp(56px,16vw,240px)] leading-[0.85] tracking-[0.06em]">TRENDORA</p>
+      </div>
       <div className="mt-16 grid gap-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <p className="max-w-sm text-[15px] opacity-80">Considered objects for a calmer home — handpicked from small studios and made in small batches.</p>
         {COLS.map((c) => (

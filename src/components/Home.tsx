@@ -5,7 +5,7 @@ import HeroCarousel from "./HeroCarousel";
 import ProductCard from "./ProductCard";
 import Photo from "./Photo";
 import { IMG } from "@/data/images";
-import { products } from "@/data/products";
+import { effectivePrice, fmt, products } from "@/data/products";
 import { useReducedMotion } from "@/lib/hooks";
 import { useStore } from "@/store/useStore";
 
@@ -16,6 +16,7 @@ const CATS = [
   { name: "Candles", n: 9, col: "2 / span 4", ratio: "1/1", mt: 0, img: IMG.candles2 },
   { name: "Tableware", n: 16, col: "7 / span 5", ratio: "5/4", mt: -60, img: IMG.kitchen },
 ];
+const FEATURED_ID = "p13";
 const ROOMS = [
   ["Living Room", IMG.livingLight], ["Bedroom", IMG.bedroom], ["Dining Room", IMG.dining],
   ["Kitchen", IMG.kitchen], ["Home Office", IMG.office], ["Bathroom", IMG.bathroom],
@@ -92,7 +93,8 @@ export default function Home() {
   }, [reduced]);
 
   const bestsellers = products.filter((p) => p.featured).slice(0, 4);
-  const arrivals = products.filter((p) => p.isNew).slice(0, 4);
+  const arrivals = products.filter((p) => p.isNew && p.id !== FEATURED_ID).slice(0, 4);
+  const featured = products.find((p) => p.id === FEATURED_ID)!;
 
   return (
     <>
@@ -190,6 +192,34 @@ export default function Home() {
         <SectionHead title={<>New <em>arrivals</em></>} link={["See all new", "/shop?new=1"]} />
         <div className="grid gap-x-5 gap-y-10 [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))]">
           {arrivals.map((p, n) => <ProductCard key={p.id} product={{ ...p, badge: "New" }} index={n} />)}
+        </div>
+      </section>
+
+      {/* Travel kitchen feature */}
+      <section data-bg="stone" className="section gutter">
+        <div className="grid items-center gap-10 md:grid-cols-12">
+          <Link href={`/products/${featured.slug}`} className="group relative block md:col-span-6" aria-label={featured.name}>
+            <div className="mask-reveal relative aspect-[4/5] overflow-hidden">
+              <div className="h-full transition-transform duration-[1200ms] ease-[var(--ease)] group-hover:scale-105">
+                <Photo src={featured.images[0]} alt={featured.name} sizes="(min-width: 768px) 50vw, 100vw" />
+              </div>
+              {featured.badge && <span className="glass label absolute left-4 top-4 px-3 py-1 text-white">{featured.badge}</span>}
+            </div>
+          </Link>
+          <div className="reveal md:col-span-5 md:col-start-8">
+            <p className="label mb-6 text-mist">The travel kitchen</p>
+            <h2 className="text-[clamp(34px,4.5vw,64px)] leading-none">Hot meals, wherever the <em>road</em> goes.</h2>
+            <p className="mt-6 max-w-[480px] text-[16px]">{featured.description}</p>
+            <p className="serif mt-8 text-3xl">
+              {featured.salePrice && <s className="mr-3 text-xl text-mist">{fmt(featured.price)}</s>}
+              {fmt(effectivePrice(featured))}
+            </p>
+            <p className="label mt-1 text-mist">{featured.name}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href={`/products/${featured.slug}`} className="btn">Shop the air fryer</Link>
+              <Link href="/shop?category=Kitchen" className="link-arrow self-center">Travel kitchen →</Link>
+            </div>
+          </div>
         </div>
       </section>
 
