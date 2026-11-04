@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="display:flex;flex-direction:column;gap:14px;cursor:pointer" onMouseEnter="{{ enter }}" onMouseLeave="{{ leave }}">
+  <div onClick="{{ open }}" style="position:relative;aspect-ratio:4/5;overflow:hidden;background:{{ p.tone }}">
+    <div style="position:absolute;inset:0;background:{{ p.tone2 }};opacity:{{ altOpacity }};transition:opacity .7s cubic-bezier(.76,0,.24,1)"></div>
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 1px,transparent 1px 14px);transform:{{ zoom }};transition:transform 1.2s cubic-bezier(.76,0,.24,1)"></div>
+    <div style="position:absolute;left:14px;bottom:14px;font:10px ui-monospace,Menlo,monospace;letter-spacing:.08em;color:rgba(255,255,255,.75);text-transform:uppercase">{{ p.cat }} / product shot</div>
+    <sc-if value="{{ p.badge }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:10px;top:10px;background:rgba(255,255,255,.55);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.5);color:#405B70;font:500 10px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:7px 10px">{{ p.badge }}</div></sc-if>
+    <button onClick="{{ wish }}" aria-label="Wishlist" style="position:absolute;right:10px;top:10px;width:34px;height:34px;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.4);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);cursor:pointer;font:12px 'Hanken Grotesk',sans-serif;color:#405B70">{{ heart }}</button>
+    <button onClick="{{ add }}" style="position:absolute;left:0;right:0;bottom:0;border:0;background:rgba(64,91,112,.62);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);color:#FFFFFF;padding:15px;font:500 11px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transform:{{ quick }};transition:transform .6s cubic-bezier(.76,0,.24,1)">Quick add</button>
+  </div>
+  <div onClick="{{ open }}" style="display:flex;justify-content:space-between;gap:16px;align-items:baseline">
+    <div style="display:flex;flex-direction:column;gap:3px"><span style="font:400 22px/1.1 'Instrument Serif',serif;color:#405B70">{{ p.name }}</span><span style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#405B70">{{ p.cat }}</span></div>
+    <span style="font:400 14px 'Hanken Grotesk',sans-serif;color:#405B70">${{ p.price }}</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { h: false };
+  renderVals() {
+    const h = this.state.h, p = this.props.p || {};
+    return {
+      altOpacity: h ? 1 : 0, zoom: h ? 'scale(1.05)' : 'scale(1)', quick: h ? 'translateY(0)' : 'translateY(101%)',
+      heart: this.props.wished ? '♥' : '♡',
+      enter: () => this.setState({ h: true }), leave: () => this.setState({ h: false }),
+      open: () => this.props.onOpen && this.props.onOpen(p.id),
+      wish: e => { e.stopPropagation(); this.props.onWish && this.props.onWish(p.id); },
+      add: e => { e.stopPropagation(); this.props.onAdd && this.props.onAdd(p.id); }
+    };
+  }
+}
+</script>
+</body>
+</html>

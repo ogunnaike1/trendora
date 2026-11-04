@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:auto}body{margin:0;background:#FFFFFF;color:#405B70;font-family:'Hanken Grotesk',sans-serif;font-weight:300}
+a{color:#405B70;text-decoration:none}a:hover{color:#8296A5}
+button{font-family:inherit}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div id="trn-root" style="min-height:100vh;background:#FFFFFF;position:relative;transition:background .9s cubic-bezier(.76,0,.24,1)">
+
+<div id="trn-prog" style="position:fixed;top:0;left:0;height:2px;width:0;background:#8296A5;z-index:120"></div>
+<!-- header -->
+<div style="position:fixed;top:0;left:0;right:0;z-index:50;transform:{{ headerT }};transition:transform .6s cubic-bezier(.76,0,.24,1)">
+  <div style="background:#405B70;color:#FFFFFF;text-align:center;padding:9px 16px;font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase">Complimentary delivery on orders over $150 · New season now available</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding:0 clamp(20px,4vw,56px);height:68px;background:{{ navBg }};color:{{ navFg }};backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid {{ navLine }};transition:background .5s cubic-bezier(.76,0,.24,1),color .5s">
+    <a href="#" onClick="{{ goHome }}" style="color:inherit;font:400 34px 'Instrument Serif',serif;letter-spacing:.14em;justify-self:start">TRENDORA</a>
+    <nav style="display:flex;gap:28px;justify-content:center;font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="4"><a href="#" onClick="{{ n.go }}" style="color:inherit;opacity:{{ n.op }}">{{ n.label }}</a></sc-for>
+    </nav>
+    <div style="display:flex;gap:26px;flex:1;justify-content:flex-end;font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase">
+      <a href="#" onClick="{{ goWish }}" style="color:inherit">Wishlist ({{ wishCount }})</a>
+      <a href="#" onClick="{{ openCart }}" style="color:inherit">Bag ({{ cartCount }})</a>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<section onMouseEnter="{{ pauseOn }}" onMouseLeave="{{ pauseOff }}" role="region" aria-roledescription="carousel" aria-label="Featured collections" style="position:relative;height:100svh;min-height:640px;overflow:hidden;background:#405B70;color:#fff">
+  <sc-for list="{{ slides }}" as="s" hint-placeholder-count="1">
+    <div style="position:absolute;inset:0;clip-path:{{ s.clip }};z-index:{{ s.z }};transition:clip-path 1.3s cubic-bezier(.76,0,.24,1)">
+      <div style="position:absolute;inset:0;background:{{ s.tone }};transform:{{ s.kb }};transition:transform 9s linear"></div>
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 1px,transparent 1px 16px)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,18,15,.55),rgba(20,18,15,0) 55%)"></div>
+      <div style="position:absolute;right:clamp(20px,4vw,56px);top:150px;font:10px ui-monospace,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7)">Drop campaign photograph — {{ s.label }}</div>
+      <div style="position:absolute;left:clamp(20px,4vw,56px);bottom:clamp(100px,14vh,130px);max-width:min(900px,calc(100vw - 40px));background:rgba(255,255,255,.1);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.3);padding:clamp(20px,2.6vw,40px)">
+        <div style="font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.24em;text-transform:uppercase;margin-bottom:22px;opacity:{{ s.op }};transition:opacity .9s .5s">{{ s.num }} — {{ s.label }}</div>
+        <h1 style="margin:0;font:400 clamp(56px,10vw,150px)/.92 'Instrument Serif',serif;letter-spacing:-.03em">
+          <sc-for list="{{ s.lines }}" as="l" hint-placeholder-count="2"><div style="overflow:hidden;padding-bottom:.08em"><div style="transform:{{ l.t }};transition:transform 1.1s {{ l.d }} cubic-bezier(.76,0,.24,1)">{{ l.text }}</div></div></sc-for>
+        </h1>
+        <p style="max-width:440px;margin:26px 0 30px;font:300 17px/1.55 'Hanken Grotesk',sans-serif;opacity:{{ s.op }};transition:opacity .9s .8s">{{ s.sub }}</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;opacity:{{ s.op }};transition:opacity .9s 1s">
+          <button onClick="{{ goShop }}" style="border:0;background:#FFFFFF;color:#405B70;padding:16px 30px;font:500 11px 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">Shop collection</button>
+          <button onClick="{{ scrollStory }}" style="border:1px solid #fff;background:transparent;color:#fff;padding:16px 30px;font:500 11px 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">Explore</button>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+  <div style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);bottom:24px;z-index:5;display:flex;align-items:center;gap:24px;padding:8px 12px 8px 22px;background:rgba(255,255,255,.12);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.3)">
+    <div style="font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.16em">{{ counter }}</div>
+    <div style="display:flex;gap:10px;flex:1;max-width:420px">
+      <sc-for list="{{ bars }}" as="b" hint-placeholder-count="4"><button onClick="{{ b.go }}" aria-label="Slide {{ b.n }}" style="flex:1;height:22px;border:0;background:transparent;cursor:pointer;padding:0;position:relative"><span style="position:absolute;left:0;right:0;top:10px;height:1px;background:rgba(255,255,255,.35)"></span><span style="position:absolute;left:0;top:10px;height:1px;width:{{ b.w }};background:#fff"></span></button></sc-for>
+    </div>
+    <div style="display:flex;gap:6px;margin-left:auto;font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase">
+      <button onClick="{{ togglePlay }}" style="border:0;background:transparent;color:#fff;cursor:pointer;padding:8px 12px;font:inherit">{{ playLabel }}</button>
+      <button onClick="{{ prev }}" aria-label="Previous slide" style="border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;width:44px;height:44px;cursor:pointer;font-size:16px">←</button>
+      <button onClick="{{ next }}" aria-label="Next slide" style="border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;width:44px;height:44px;cursor:pointer;font-size:16px">→</button>
+    </div>
+  </div>
+</section>
+
+<div style="overflow:hidden;border-bottom:1px solid #EAE7E0;background:#EAE7E0;padding:16px 0">
+  <div style="display:flex;width:max-content;animation:marq 40s linear infinite;font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.24em;text-transform:uppercase;white-space:nowrap">
+    <sc-for list="{{ marquee }}" as="m" hint-placeholder-count="8"><span style="padding:0 36px">{{ m }} <span style="color:#8296A5;padding-left:36px">•</span></span></sc-for>
+  </div>
+</div>
+
+<!-- categories -->
+<section data-bg="#FFFFFF" style="padding:clamp(70px,10vw,150px) clamp(20px,4vw,56px) 40px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:48px">
+    <h2 data-rv="1" style="margin:0;font:400 clamp(44px,7vw,104px)/.95 'Instrument Serif',serif;letter-spacing:-.025em">Shop by<br><em style="color:#8296A5">category</em></h2>
+    <p style="max-width:300px;margin:0;font-size:15px;line-height:1.6;color:#405B70">Eight rooms' worth of considered objects — each one chosen for how it ages, not how it trends.</p>
+  </div>
+  <div data-rvg="1" style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px">
+    <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+      <a href="#" onClick="{{ c.go }}" style="grid-column:{{ c.col }};margin-top:{{ c.mt }};display:block;color:inherit">
+        <div style="position:relative;aspect-ratio:{{ c.ratio }};background:{{ c.tone }};overflow:hidden">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 1px,transparent 1px 14px)"></div>
+          <div style="position:absolute;left:12px;bottom:12px;padding:8px 12px;background:rgba(255,255,255,.18);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.35);font:10px ui-monospace,Menlo,monospace;letter-spacing:.08em;color:#fff;text-transform:uppercase">{{ c.name }} / lifestyle</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;border-bottom:1px solid #405B70;padding-bottom:10px"><span style="font:400 28px 'Instrument Serif',serif">{{ c.name }}</span><span style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em">{{ c.n }} →</span></div>
+      </a>
+    </sc-for>
+  </div>
+</section>
+
+<!-- bestsellers -->
+<section data-bg="#FFFFFF" style="padding:clamp(70px,9vw,130px) clamp(20px,4vw,56px)">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #405B70;padding-bottom:18px;margin-bottom:40px">
+    <h2 style="margin:0;font:400 clamp(34px,4.5vw,64px)/1 'Instrument Serif',serif;letter-spacing:-.02em">The considered edit</h2>
+    <a href="#" onClick="{{ goShop }}" style="font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase">View all →</a>
+  </div>
+  <div data-rvg="1" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:40px 20px">
+    <sc-for list="{{ best }}" as="p" hint-placeholder-count="4"><dc-import name="ProductCard" p="{{ p }}" wished="{{ p.wished }}" on-open="{{ openProduct }}" on-wish="{{ toggleWish }}" on-add="{{ quickAdd }}" hint-size="100%,400px"></dc-import></sc-for>
+  </div>
+</section>
+
+<!-- story -->
+<section id="story" style="background:#EAE7E0;padding:clamp(70px,10vw,150px) clamp(20px,4vw,56px)">
+  <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;align-items:start">
+    <div style="grid-column:1 / span 6;position:relative;padding-bottom:90px">
+      <div data-clip="1" style="aspect-ratio:4/5;background:#405B70;position:relative"><div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 1px,transparent 1px 14px)"></div><div style="position:absolute;left:14px;bottom:14px;font:10px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.75);text-transform:uppercase">Interior / editorial</div></div>
+      <div data-px="-0.14" style="position:absolute;right:-9%;bottom:0;width:46%;aspect-ratio:1;background:#8296A5;border:10px solid #EAE7E0;box-sizing:border-box"><div style="position:absolute;left:10px;bottom:10px;font:10px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.8);text-transform:uppercase">Detail / ceramic</div></div>
+    </div>
+    <div data-rv="1" style="grid-column:7 / span 6;margin-left:-6%;margin-top:60px;position:relative;z-index:2;padding:clamp(24px,3vw,48px);background:rgba(255,255,255,.5);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.7)">
+      <div style="font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#405B70;margin-bottom:26px">Our philosophy</div>
+      <h2 style="margin:0 0 30px;font:400 clamp(40px,5.2vw,76px)/1 'Instrument Serif',serif;letter-spacing:-.025em">Objects that make a space feel like <em>yours.</em></h2>
+      <p style="font-size:16px;line-height:1.7;max-width:440px;margin:0 0 34px">We believe a home is composed slowly. Each Trendora piece is made in small runs by studios we know by name, in materials that soften with use — so rooms grow more personal, not more crowded.</p>
+      <div style="display:flex;gap:40px;border-top:1px solid #405B70;padding-top:22px">
+        <div><div data-count="42" style="font:400 44px 'Instrument Serif',serif">42</div><div style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#405B70">Partner studios</div></div>
+        <div><div data-count="100" data-suf="%" style="font:400 44px 'Instrument Serif',serif">100%</div><div style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#405B70">Natural materials</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- rooms -->
+<section data-pin="1" style="height:340vh;background:#405B70;color:#FFFFFF;position:relative">
+<div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:70px 0 0 clamp(20px,4vw,56px);box-sizing:border-box">
+  <h2 style="margin:0 0 36px;font:400 clamp(40px,6vw,88px)/.95 'Instrument Serif',serif;letter-spacing:-.025em">Shop by room</h2>
+  <div data-track="1" style="display:flex;gap:16px;width:max-content;padding-right:56px;will-change:transform">
+    <sc-for list="{{ rooms }}" as="r" hint-placeholder-count="5">
+      <a href="#" onClick="{{ goShop }}" style="flex:0 0 clamp(220px,24vw,360px);color:#FFFFFF;margin-top:{{ r.mt }}">
+        <div style="aspect-ratio:3/4;background:{{ r.tone }};position:relative"><div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 1px,transparent 1px 14px)"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px;padding:12px 14px;background:rgba(255,255,255,.1);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.25);font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase"><span>{{ r.n }}</span><span>{{ r.name }}</span></div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+</section>
+
+<!-- new arrivals -->
+<section data-bg="#EAE7E0" style="padding:clamp(70px,9vw,130px) clamp(20px,4vw,56px)">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #405B70;padding-bottom:18px;margin-bottom:40px">
+    <h2 style="margin:0;font:400 clamp(34px,4.5vw,64px)/1 'Instrument Serif',serif;letter-spacing:-.02em">New <em style="color:#8296A5">arrivals</em></h2>
+    <a href="#" onClick="{{ goNew }}" style="font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase">See all new →</a>
+  </div>
+  <div data-rvg="1" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:40px 20px">
+    <sc-for list="{{ fresh }}" as="p" hint-placeholder-count="4"><dc-import name="ProductCard" p="{{ p }}" wished="{{ p.wished }}" on-open="{{ openProduct }}" on-wish="{{ toggleWish }}" on-add="{{ quickAdd }}" hint-size="100%,400px"></dc-import></sc-for>
+  </div>
+</section>
+
+<!-- feature -->
+<section style="position:relative;height:min(90vh,780px);background:#405B70;color:#FFFFFF;overflow:hidden">
+  <div data-px="0.22" style="position:absolute;left:0;right:0;top:-25%;bottom:-25%;background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 1px,transparent 1px 16px),#8296A5"></div>
+  <div style="position:absolute;right:clamp(20px,4vw,56px);top:24px;font:10px ui-monospace,Menlo,monospace;text-transform:uppercase;color:rgba(255,255,255,.7)">Full-bleed collection photograph</div>
+  <div data-rv="1" style="position:absolute;left:clamp(20px,4vw,56px);bottom:clamp(30px,5vw,60px);max-width:min(800px,calc(100vw - 40px));padding:clamp(20px,3vw,44px);background:rgba(255,255,255,.12);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border:1px solid rgba(255,255,255,.3)">
+    <div style="font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.24em;text-transform:uppercase;margin-bottom:22px">The Autumn Collection</div>
+    <h2 style="margin:0 0 30px;font:400 clamp(48px,8vw,120px)/.92 'Instrument Serif',serif;letter-spacing:-.03em">The art of a<br><em>considered</em> home.</h2>
+    <button onClick="{{ goShop }}" style="border:0;background:#FFFFFF;color:#405B70;padding:16px 30px;font:500 11px 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">Explore the collection</button>
+  </div>
+</section>
+
+<!-- testimonials -->
+<section data-bg="#FFFFFF" style="padding:clamp(70px,9vw,130px) clamp(20px,4vw,56px)">
+  <div data-rvg="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0">
+    <sc-for list="{{ quotes }}" as="q" hint-placeholder-count="3">
+      <figure style="margin:0;padding:8px 32px 8px 0;border-top:1px solid #405B70;margin-top:{{ q.mt }}">
+        <blockquote style="margin:26px 0 22px;font:400 26px/1.25 'Instrument Serif',serif;text-wrap:pretty">“{{ q.t }}”</blockquote>
+        <figcaption style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#405B70">{{ q.by }}</figcaption>
+      </figure>
+    </sc-for>
+  </div>
+</section>
+
+<!-- newsletter -->
+<section style="background:#EAE7E0;padding:clamp(60px,8vw,110px) clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;align-items:end">
+  <h2 style="margin:0;font:400 clamp(38px,5vw,72px)/1 'Instrument Serif',serif;letter-spacing:-.025em">A little inspiration<br>for your space.</h2>
+  <div>
+    <div style="display:flex;border-bottom:1px solid #405B70">
+      <input value="{{ email }}" onChange="{{ setEmail }}" placeholder="Email address" aria-label="Email address" style="flex:1;border:0;background:transparent;padding:16px 0;font:300 16px 'Hanken Grotesk',sans-serif;outline:none;color:#405B70">
+      <button onClick="{{ subscribe }}" style="border:0;background:transparent;font:500 11px 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;color:#405B70">Subscribe →</button>
+    </div>
+    <div style="font-size:12px;color:#405B70;padding-top:10px">One letter a month. Unsubscribe anytime.</div>
+  </div>
+</section>
+
+<!-- social -->
+<section style="padding:clamp(60px,8vw,110px) clamp(20px,4vw,56px) 0">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px"><h2 style="margin:0;font:400 clamp(30px,3.5vw,48px) 'Instrument Serif',serif">@trendora.home</h2><a href="#" style="font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase">Follow →</a></div>
+  <div data-rvg="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+    <sc-for list="{{ social }}" as="t" hint-placeholder-count="6"><div style="aspect-ratio:1;background:{{ t }}"></div></sc-for>
+  </div>
+</section>
+</sc-if>
+
+<!-- SHOP / WISHLIST -->
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+<section style="padding:170px clamp(20px,4vw,56px) 100px;min-height:100vh">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;border-bottom:1px solid #405B70;padding-bottom:24px">
+    <h1 style="margin:0;font:400 clamp(52px,9vw,128px)/.9 'Instrument Serif',serif;letter-spacing:-.03em">{{ listTitle }}</h1>
+    <div style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#405B70">{{ listCount }} pieces</div>
+  </div>
+  <sc-if value="{{ isShop }}" hint-placeholder-val="{{ false }}">
+  <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:18px 0 40px;align-items:center">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <sc-for list="{{ chips }}" as="c" hint-placeholder-count="7"><button onClick="{{ c.go }}" style="border:1px solid #405B70;background:{{ c.bg }};color:{{ c.fg }};padding:9px 16px;font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">{{ c.name }}</button></sc-for>
+    </div>
+    <div style="display:flex;gap:16px;align-items:center;font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase">
+      <label>Sort <select value="{{ sort }}" onChange="{{ setSort }}" style="border:0;border-bottom:1px solid #405B70;background:transparent;font:inherit;padding:6px;color:#405B70"><option value="feat">Featured</option><option value="lo">Price: low–high</option><option value="hi">Price: high–low</option></select></label>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ emptyList }}" hint-placeholder-val="{{ false }}"><p style="padding:60px 0;font:400 28px 'Instrument Serif',serif">Nothing here yet. <a href="#" onClick="{{ goShop }}" style="text-decoration:underline">Browse the shop</a>.</p></sc-if>
+  <div data-rvg="1" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:48px 20px;padding-top:24px">
+    <sc-for list="{{ listItems }}" as="p" hint-placeholder-count="4"><dc-import name="ProductCard" p="{{ p }}" wished="{{ p.wished }}" on-open="{{ openProduct }}" on-wish="{{ toggleWish }}" on-add="{{ quickAdd }}" hint-size="100%,400px"></dc-import></sc-for>
+  </div>
+</section>
+</sc-if>
+
+<!-- PRODUCT -->
+<sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+<section style="padding:150px clamp(20px,4vw,56px) 80px">
+  <div style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#405B70;margin-bottom:28px"><a href="#" onClick="{{ goShop }}" style="color:inherit">Shop</a> / {{ cur.cat }} / {{ cur.name }}</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(24px,5vw,80px);align-items:start">
+    <div style="display:grid;grid-template-columns:72px 1fr;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ thumbs }}" as="t" hint-placeholder-count="4"><button onClick="{{ t.go }}" aria-label="Image {{ t.n }}" style="aspect-ratio:1;border:1px solid {{ t.bd }};background:{{ t.tone }};cursor:pointer;padding:0"></button></sc-for>
+      </div>
+      <div style="aspect-ratio:4/5;background:{{ mainTone }};position:relative;transition:background .6s"><div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.07) 0 1px,transparent 1px 14px)"></div><div style="position:absolute;left:14px;bottom:14px;font:10px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.75);text-transform:uppercase">{{ cur.name }} / view {{ img1 }}</div></div>
+    </div>
+    <div style="max-width:520px">
+      <div style="font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8296A5;margin-bottom:16px">{{ cur.cat }}</div>
+      <h1 style="margin:0 0 14px;font:400 clamp(44px,5vw,72px)/1 'Instrument Serif',serif;letter-spacing:-.02em">{{ cur.name }}</h1>
+      <div style="font:400 20px 'Hanken Grotesk',sans-serif;margin-bottom:26px">${{ cur.price }} <span style="font-size:12px;color:#405B70;letter-spacing:.08em">· ★ {{ cur.rating }} ({{ cur.reviews }})</span></div>
+      <p style="font-size:16px;line-height:1.7;margin:0 0 30px">{{ cur.desc }}</p>
+      <div style="font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px">Colour — {{ colorName }}</div>
+      <div style="display:flex;gap:12px;margin-bottom:30px">
+        <sc-for list="{{ swatches }}" as="c" hint-placeholder-count="3"><button onClick="{{ c.go }}" aria-label="{{ c.name }}" style="width:34px;height:34px;border-radius:50%;background:{{ c.hex }};border:1px solid #405B70;cursor:pointer;outline:{{ c.ring }};outline-offset:3px;padding:0"></button></sc-for>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:12px">
+        <div style="display:flex;border:1px solid #405B70;align-items:center"><button onClick="{{ qMinus }}" aria-label="Decrease" style="width:44px;height:52px;border:0;background:transparent;cursor:pointer;font-size:16px">−</button><span style="width:30px;text-align:center;font-size:14px">{{ qty }}</span><button onClick="{{ qPlus }}" aria-label="Increase" style="width:44px;height:52px;border:0;background:transparent;cursor:pointer;font-size:16px">+</button></div>
+        <button onClick="{{ addCur }}" style="flex:1;border:0;background:#405B70;color:#FFFFFF;font:500 11px 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer" style-hover="background:#2E4252">Add to bag — ${{ lineTotal }}</button>
+        <button onClick="{{ wishCur }}" aria-label="Wishlist" style="width:52px;border:1px solid #405B70;background:transparent;cursor:pointer;font-size:16px">{{ curHeart }}</button>
+      </div>
+      <div style="font-size:12px;color:#405B70;margin-bottom:34px">{{ cur.stock }} in stock · Ships in 2–3 working days</div>
+      <div style="border-top:1px solid #405B70">
+        <sc-for list="{{ accs }}" as="a" hint-placeholder-count="3">
+          <div style="border-bottom:1px solid #EAE7E0">
+            <button onClick="{{ a.go }}" style="width:100%;display:flex;justify-content:space-between;border:0;background:transparent;padding:18px 0;font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;color:#405B70"><span>{{ a.h }}</span><span>{{ a.sign }}</span></button>
+            <div style="display:grid;grid-template-rows:{{ a.rows }};transition:grid-template-rows .6s cubic-bezier(.76,0,.24,1)"><div style="overflow:hidden"><p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#405B70">{{ a.b }}</p></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <h2 style="margin:110px 0 30px;padding-top:18px;border-top:1px solid #405B70;font:400 clamp(30px,3.5vw,48px) 'Instrument Serif',serif">You may also like</h2>
+  <div data-rvg="1" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:40px 20px">
+    <sc-for list="{{ related }}" as="p" hint-placeholder-count="4"><dc-import name="ProductCard" p="{{ p }}" wished="{{ p.wished }}" on-open="{{ openProduct }}" on-wish="{{ toggleWish }}" on-add="{{ quickAdd }}" hint-size="100%,400px"></dc-import></sc-for>
+  </div>
+</section>
+</sc-if>
+
+<!-- footer -->
+<footer style="background:#405B70;color:#FFFFFF;padding:clamp(60px,8vw,110px) clamp(20px,4vw,56px) 30px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:40px;padding-bottom:70px">
+    <div style="grid-column:span 2;min-width:240px"><div style="font:400 clamp(52px,8vw,112px)/.9 'Instrument Serif',serif;letter-spacing:.06em">TRENDORA</div><p style="max-width:320px;font-size:14px;line-height:1.7;color:#EAE7E0;margin-top:20px">Thoughtfully selected pieces that bring character, warmth and intention into every corner of your home.</p></div>
+    <sc-for list="{{ footCols }}" as="f" hint-placeholder-count="3">
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:14px"><div style="font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#EAE7E0;margin-bottom:6px">{{ f.h }}</div><sc-for list="{{ f.items }}" as="i" hint-placeholder-count="4"><a href="#" onClick="{{ goShop }}" style="color:#FFFFFF">{{ i }}</a></sc-for></div>
+    </sc-for>
+  </div>
+  <div style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.2);padding-top:22px;font:11px 'Hanken Grotesk',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#EAE7E0"><span>© 2026 Trendora. All rights reserved.</span><span>Visa · Mastercard · Amex · Apple Pay · PayPal</span></div>
+</footer>
+
+<!-- cart drawer -->
+<div onClick="{{ closeCart }}" style="position:fixed;inset:0;background:rgba(64,91,112,.45);z-index:80;opacity:{{ scrimO }};pointer-events:{{ scrimP }};transition:opacity .5s"></div>
+<aside aria-label="Shopping bag" style="position:fixed;top:0;right:0;bottom:0;width:min(440px,100vw);background:rgba(255,255,255,.72);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);z-index:90;transform:{{ drawerT }};transition:transform .7s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 28px;border-bottom:1px solid #405B70"><span style="font:400 30px 'Instrument Serif',serif">Your bag ({{ cartCount }})</span><button onClick="{{ closeCart }}" style="border:0;background:transparent;font:400 11px 'Hanken Grotesk',sans-serif;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;color:#405B70">Close ✕</button></div>
+  <div style="flex:1;overflow:auto;padding:8px 28px">
+    <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ true }}"><p style="font:400 24px 'Instrument Serif',serif;padding-top:30px;color:#405B70">Your bag is empty.</p></sc-if>
+    <sc-for list="{{ lines }}" as="l" hint-placeholder-count="0">
+      <div style="display:grid;grid-template-columns:84px 1fr auto;gap:16px;padding:20px 0;border-bottom:1px solid #EAE7E0">
+        <div style="aspect-ratio:1;background:{{ l.tone }}"></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font:400 20px 'Instrument Serif',serif">{{ l.name }}</span><span style="font-size:12px;color:#405B70">{{ l.color }}</span>
+          <div style="display:flex;align-items:center;border:1px solid #405B70;width:fit-content"><button onClick="{{ l.minus }}" aria-label="Decrease" style="width:30px;height:30px;border:0;background:transparent;cursor:pointer">−</button><span style="width:24px;text-align:center;font-size:13px">{{ l.qty }}</span><button onClick="{{ l.plus }}" aria-label="Increase" style="width:30px;height:30px;border:0;background:transparent;cursor:pointer">+</button></div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-size:14px"><span>${{ l.total }}</span><button onClick="{{ l.remove }}" style="border:0;background:transparent;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:underline;cursor:pointer;color:#405B70">Remove</button></div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="padding:22px 28px 28px;border-top:1px solid #405B70;display:flex;flex-direction:column;gap:10px;font-size:14px">
+    <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span>${{ subtotal }}</span></div>
+    <div style="display:flex;justify-content:space-between"><span>Delivery</span><span>{{ shipLabel }}</span></div>
+    <div style="font-size:12px;color:#405B70">{{ freeNote }}</div>
+    <div style="display:flex;justify-content:space-between;font:400 24px 'Instrument Serif',serif;padding-top:8px"><span>Total</span><span>${{ grand }}</span></div>
+    <button onClick="{{ checkout }}" style="margin-top:6px;border:0;background:#405B70;color:#FFFFFF;padding:18px;font:500 11px 'Hanken Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">Checkout</button>
+  </div>
+</aside>
+
+<!-- toast -->
+<div style="position:fixed;left:50%;bottom:28px;z-index:100;transform:translate(-50%,{{ toastY }});opacity:{{ toastO }};transition:transform .5s cubic-bezier(.76,0,.24,1),opacity .5s;background:rgba(64,91,112,.78);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);color:#FFFFFF;padding:14px 24px;font:400 12px 'Hanken Grotesk',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">{{ toast }}</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { view: 'home', idx: 0, prev: -1, prog: 0, paused: false, userPause: false, hidden: false, scrolled: false, up: true, cat: 'All', sort: 'feat', onlyNew: false, pid: 1, img: 0, color: 0, qty: 1, acc: 0, cart: [], wish: [], cartOpen: false, toast: '', email: '' };
+  P = [
+    [1,'Arca Vase','Vases',89,'oklch(0.58 0.035 245)','oklch(0.68 0.035 245)',['Clay','Bone','Ink'],true,true,'Hand-thrown stoneware vase with a matte, mineral glaze. Sculptural alone, quietly beautiful with a single stem.','Stoneware','H 34 × Ø 16 cm','',4.8,62,12],
+    [2,'Lumen Table Lamp','Lighting',189,'oklch(0.5 0.035 245)','oklch(0.62 0.035 245)',['Brass','Bone'],true,false,'A turned-oak base beneath a pleated linen shade, casting a low, amber glow made for evenings.','Oak, linen','H 46 × Ø 28 cm','New',4.9,41,6],
+    [3,'Soma Cushion','Textiles',64,'oklch(0.55 0.035 245)','oklch(0.65 0.035 245)',['Sage','Oat','Clay'],true,false,'Stonewashed linen with a soft, lived-in hand. Feather and down insert included.','Linen','50 × 50 cm','',4.7,88,30],
+    [4,'Orbit Wall Mirror','Wall Decor',245,'oklch(0.42 0.035 245)','oklch(0.54 0.035 245)',['Oak','Charcoal'],false,true,'A softly arched mirror framed in solid oak. Hang vertically or lay it against the wall.','Oak, glass','72 × 52 cm','New',4.6,19,8],
+    [5,'Tala Candle','Candles',42,'oklch(0.7 0.035 245)','oklch(0.78 0.035 245)',['Fig','Cedar','Amber'],true,false,'Hand-poured soy wax in a heavy ceramic vessel. Slow, even burn of 55 hours.','Soy wax, ceramic','Ø 9 × H 9 cm','',4.9,140,50],
+    [6,'Mesa Serving Bowl','Tableware',76,'oklch(0.6 0.035 245)','oklch(0.7 0.035 245)',['Sand','Olive'],false,true,'A wide, shallow bowl with a pooled glaze. Made for sharing at the centre of the table.','Stoneware','Ø 28 × H 9 cm','New',4.8,33,14],
+    [7,'Fold Floor Lamp','Lighting',329,'oklch(0.36 0.035 245)','oklch(0.48 0.035 245)',['Black','Brass'],true,false,'A slim steel stem with a folded paper diffuser. Soft ambient light for reading corners.','Steel, paper','H 150 cm','',4.7,27,5],
+    [8,'Nube Throw','Textiles',148,'oklch(0.72 0.035 245)','oklch(0.8 0.035 245)',['Oat','Taupe'],true,true,'Brushed merino blend, woven in Portugal. Light, warm and endlessly draped.','Merino, cotton','130 × 180 cm','New',4.9,54,18],
+    [9,'Duna Planter','Vases',58,'oklch(0.5 0.035 245)','oklch(0.6 0.035 245)',['Terracotta','Bone'],false,false,'Raw-edged terracotta planter with a drainage saucer built in.','Terracotta','Ø 24 × H 22 cm','',4.5,22,25],
+    [10,'Linea Print Set','Wall Decor',95,'oklch(0.66 0.035 245)','oklch(0.76 0.035 245)',['Oak','White'],false,true,'Two risograph prints of abstract line forms, framed in natural oak.','Paper, oak','2 × 40 × 50 cm','',4.6,17,10],
+    [11,'Pilar Candlesticks','Candles',68,'oklch(0.45 0.035 245)','oklch(0.57 0.035 245)',['Brass','Black'],true,false,'Set of three turned candlesticks in varying heights.','Brass','H 8 / 12 / 16 cm','',4.8,36,20],
+    [12,'Oro Dinner Plates','Tableware',112,'oklch(0.74 0.035 245)','oklch(0.82 0.035 245)',['Bone','Olive'],false,true,'Set of four plates with a hand-finished rim. Dishwasher safe.','Stoneware','Ø 27 cm','',4.7,45,16]
+  ].map(a => ({ id: a[0], name: a[1], cat: a[2], price: a[3], tone: a[4], tone2: a[5], colors: a[6], best: a[7], isNew: a[8] === false ? false : a[8] && false, desc: a[9], mat: a[10], dims: a[11], badge: a[12], rating: a[13], reviews: a[14], stock: a[15] }));
+  HEX = { Clay: '#8296A5', Bone: '#EAE7E0', Ink: '#405B70', Brass: '#B9B2A3', Sage: '#8296A5', Oat: '#EAE7E0', Oak: '#A9B4BC', Charcoal: '#2E4252', Fig: '#5d7387', Cedar: '#6f8596', Amber: '#C9CFD4', Sand: '#D6D2C8', Olive: '#6f8596', Black: '#22303b', Terracotta: '#8296A5', Taupe: '#B8C2CA', White: '#fff' };
+  SL = [
+    { label: 'The Quiet Living Room', lines: ['Make room for', 'better living.'], sub: 'Thoughtfully selected pieces that bring character, warmth and intention into every corner of your home.', tone: 'oklch(0.42 0.035 245)' },
+    { label: 'Evening Light', lines: ['Light, held', 'low and warm.'], sub: 'Lamps and candles for the hour after dusk — sculptural by day, glowing by night.', tone: 'oklch(0.32 0.035 245)' },
+    { label: 'Table Rituals', lines: ['Set the table', 'slowly.'], sub: 'Hand-glazed stoneware for meals that deserve a little ceremony.', tone: 'oklch(0.45 0.035 245)' },
+    { label: 'New Season Textures', lines: ['Wool, linen,', 'and clay.'], sub: 'Tactile layers to soften the coming months.', tone: 'oklch(0.4 0.035 245)' }
+  ];
+  componentDidMount() {
+    this.t = setInterval(() => {
+      const s = this.state;
+      if (s.view !== 'home' || s.paused || s.userPause || s.hidden) return;
+      const p = s.prog + 60 / 6500;
+      if (p >= 1) this.goSlide((s.idx + 1) % 4); else this.setState({ prog: p });
+    }, 60);
+    this.vis = () => this.setState({ hidden: document.hidden });
+    document.addEventListener('visibilitychange', this.vis);
+    this.lastY = 0;
+    this.sc = () => { const y = window.scrollY; this.setState({ scrolled: y > 60, up: y < this.lastY || y < 200 }); this.lastY = y; };
+    window.addEventListener('scroll', this.sc, { passive: true });
+    this.fxs = () => this.onScroll(); window.addEventListener('scroll', this.fxs, { passive: true }); window.addEventListener('resize', this.fxs);
+    this.rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const el = e.target; this.io.unobserve(el);
+      if (el.hasAttribute('data-clip')) el.style.clipPath = 'inset(0 0 0 0)';
+      else if (el.hasAttribute('data-count')) this.count(el);
+      else { el.style.opacity = 1; el.style.transform = 'translateY(0)'; } }), { rootMargin: '0px 0px -8% 0px' });
+    this.scanT = setInterval(() => this.scan(), 400); this.scan(); setTimeout(() => this.fx(), 300);
+    this.key = e => { if (this.state.view === 'home') { if (e.key === 'ArrowRight') this.goSlide((this.state.idx + 1) % 4); if (e.key === 'ArrowLeft') this.goSlide((this.state.idx + 3) % 4); } };
+    window.addEventListener('keydown', this.key);
+  }
+  scan() {
+    if (this.rm) return;
+    document.querySelectorAll('[data-rv],[data-rvg]>*,[data-clip],[data-count]').forEach(el => {
+      if (el.dataset.fx) return; el.dataset.fx = '1';
+      if (el.hasAttribute('data-clip')) { el.style.clipPath = 'inset(0 0 100% 0)'; el.style.transition = 'clip-path 1.5s cubic-bezier(.76,0,.24,1)'; }
+      else if (el.hasAttribute('data-count')) el.textContent = '0' + (el.dataset.suf || '');
+      else { const i = Array.prototype.indexOf.call(el.parentNode.children, el) % 4, d = (i * 0.09) + 's';
+        el.style.opacity = 0; el.style.transform = 'translateY(48px)';
+        el.style.transition = 'opacity 1s ' + d + ' cubic-bezier(.76,0,.24,1), transform 1.2s ' + d + ' cubic-bezier(.76,0,.24,1)'; }
+      this.io.observe(el);
+    });
+  }
+  count(el) { const to = +el.dataset.count, suf = el.dataset.suf || '', t0 = performance.now();
+    const step = n => { const k = Math.min(1, (n - t0) / 1600), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(to * e) + suf; if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step); }
+  onScroll() { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.fx(); }); }
+  fx() {
+    const vh = innerHeight, y = scrollY, d = document.documentElement, q = s => document.querySelectorAll(s);
+    const pb = document.getElementById('trn-prog'); if (pb) pb.style.width = (y / Math.max(1, d.scrollHeight - vh) * 100) + '%';
+    if (this.rm) return;
+    q('[data-px]').forEach(el => { const r = el.parentNode.getBoundingClientRect(); el.style.transform = 'translate3d(0,' + (-(r.top + r.height / 2 - vh / 2) * parseFloat(el.dataset.px)) + 'px,0)'; });
+    q('[data-pin]').forEach(sec => { const r = sec.getBoundingClientRect(), tr = sec.querySelector('[data-track]');
+      const p = Math.min(1, Math.max(0, -r.top / (r.height - vh))), max = tr.scrollWidth - innerWidth;
+      tr.style.transform = 'translate3d(' + (-p * max) + 'px,0,0)'; });
+    let bg = '#FFFFFF'; q('[data-bg]').forEach(s => { const r = s.getBoundingClientRect(); if (r.top < vh * .5 && r.bottom > vh * .5) bg = s.dataset.bg; });
+    const root = document.getElementById('trn-root'); if (root) root.style.background = bg;
+  }
+  componentDidUpdate() { this.scan(); }
+  componentWillUnmount() { clearInterval(this.scanT); this.io && this.io.disconnect(); window.removeEventListener('scroll', this.fxs); window.removeEventListener('resize', this.fxs); clearInterval(this.t); document.removeEventListener('visibilitychange', this.vis); window.removeEventListener('scroll', this.sc); window.removeEventListener('keydown', this.key); clearTimeout(this.tt); }
+  goSlide(i) { this.setState(s => ({ prev: s.idx, idx: i, prog: 0 })); }
+  go(view, extra = {}) { this.setState({ view, cartOpen: false, cat: 'All', onlyNew: false, ...extra }); window.scrollTo(0, 0); }
+  say(t) { this.setState({ toast: t }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: '' }), 2200); }
+  addItem(id, color, qty) {
+    this.setState(s => {
+      const c = s.cart.slice(), k = c.findIndex(x => x.id === id && x.color === color);
+      if (k > -1) c[k] = { ...c[k], qty: c[k].qty + qty }; else c.push({ id, color, qty });
+      return { cart: c };
+    });
+    this.say('Added to bag');
+  }
+  renderVals() {
+    const s = this.state, P = this.P, me = this;
+    const wished = p => ({ ...p, wished: s.wish.includes(p.id) });
+    const byId = id => P.find(p => p.id === id);
+    const home = s.view === 'home', isShop = s.view === 'shop';
+    const dark = home && !s.scrolled;
+    const cur = byId(s.pid) || P[0];
+    const toWish = id => this.setState(st => ({ wish: st.wish.includes(id) ? st.wish.filter(x => x !== id) : [...st.wish, id] }));
+    // slides
+    const slides = this.SL.map((x, i) => {
+      const a = i === s.idx;
+      return { label: x.label, sub: x.sub, tone: x.tone, num: '0' + (i + 1), op: a ? 1 : 0, z: a ? 2 : i === s.prev ? 1 : 0,
+        clip: (a || i === s.prev) ? 'inset(0 0 0 0)' : 'inset(0 0 0 100%)', kb: a ? 'scale(1.1)' : 'scale(1)',
+        lines: x.lines.map((t, j) => ({ text: t, t: a ? 'translateY(0)' : 'translateY(110%)', d: a ? (0.45 + j * 0.15) + 's' : '0s' })) };
+    });
+    const cats = [['Lighting', '1 / span 5', '0', '4/5'], ['Vases', '6 / span 3', '90px', '3/4'], ['Textiles', '9 / span 4', '30px', '4/5'], ['Candles', '2 / span 4', '0', '1/1'], ['Tableware', '7 / span 5', '-60px', '5/4']].map((c, i) => ({
+      name: c[0], col: c[1], mt: c[2], ratio: c[3], tone: P.find(p => p.cat === c[0]).tone, n: P.filter(p => p.cat === c[0]).length + ' pieces',
+      go: e => { e.preventDefault(); me.go('shop', { cat: c[0] }); } }));
+    // shop list
+    let list = P.slice();
+    if (s.view === 'wishlist') list = list.filter(p => s.wish.includes(p.id));
+    else {
+      if (s.cat !== 'All') list = list.filter(p => p.cat === s.cat);
+      if (s.onlyNew) list = list.filter(p => p.badge === 'New');
+      if (s.sort === 'lo') list.sort((a, b) => a.price - b.price); if (s.sort === 'hi') list.sort((a, b) => b.price - a.price);
+    }
+    const chips = ['All', 'Lighting', 'Vases', 'Textiles', 'Wall Decor', 'Tableware', 'Candles'].map(n => ({ name: n, bg: s.cat === n ? '#405B70' : 'transparent', fg: s.cat === n ? '#FFFFFF' : '#405B70', go: () => me.setState({ cat: n, onlyNew: false }) }));
+    // cart
+    const lines = s.cart.map((l, i) => { const p = byId(l.id); return { name: p.name, tone: p.tone, color: l.color, qty: l.qty, total: p.price * l.qty,
+      minus: () => me.setState(st => ({ cart: st.cart.map((x, j) => j === i ? { ...x, qty: Math.max(1, x.qty - 1) } : x) })),
+      plus: () => me.setState(st => ({ cart: st.cart.map((x, j) => j === i ? { ...x, qty: x.qty + 1 } : x) })),
+      remove: () => me.setState(st => ({ cart: st.cart.filter((x, j) => j !== i) })) }; });
+    const subtotal = lines.reduce((a, l) => a + l.total, 0), ship = subtotal === 0 || subtotal >= 150 ? 0 : 12;
+    const cartCount = s.cart.reduce((a, l) => a + l.qty, 0);
+    const accData = [['Details', cur.desc + ' Designed in-house and made in small batches.'], ['Materials & dimensions', cur.mat + ' · ' + cur.dims + '. Wipe clean with a soft, damp cloth.'], ['Shipping & returns', 'Complimentary delivery over $150, otherwise $12. Free returns within 30 days of delivery.']];
+    const color = cur.colors[Math.min(s.color, cur.colors.length - 1)];
+    const fade = [['oklch(0.58 0.035 245)', 'oklch(0.34 0.035 245)', 'oklch(0.7 0.035 245)']];
+    const goNav = (label, fn) => ({ label, go: e => { e.preventDefault(); fn(); }, op: 1 });
+    return {
+      isHome: home, isList: isShop || s.view === 'wishlist', isShop, isProduct: s.view === 'product',
+      headerT: s.up || s.cartOpen ? 'translateY(0)' : 'translateY(-110%)',
+      navBg: dark ? 'rgba(255,255,255,.08)' : 'rgba(255,255,255,.62)', navFg: dark ? '#fff' : '#405B70', navLine: dark ? 'rgba(255,255,255,.25)' : '#405B70',
+      nav: [goNav('Home', () => me.go('home')), goNav('Shop', () => me.go('shop')), goNav('New', () => me.go('shop', { onlyNew: true })), goNav('Collections', () => me.go('shop', { cat: 'Lighting' }))],
+      goHome: e => { e.preventDefault(); me.go('home'); }, goShop: e => { e.preventDefault(); me.go('shop'); }, goNew: e => { e.preventDefault(); me.go('shop', { onlyNew: true }); },
+      goWish: e => { e.preventDefault(); me.go('wishlist'); }, openCart: e => { e.preventDefault(); me.setState({ cartOpen: true }); },
+      scrollStory: () => { const el = document.getElementById('story'); if (el) window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 70); },
+      wishCount: s.wish.length, cartCount,
+      slides, counter: '0' + (s.idx + 1) + ' / 04',
+      bars: this.SL.map((x, i) => ({ n: i + 1, w: i < s.idx ? '100%' : i === s.idx ? (s.prog * 100) + '%' : '0%', go: () => me.goSlide(i) })),
+      prev: () => me.goSlide((s.idx + 3) % 4), next: () => me.goSlide((s.idx + 1) % 4),
+      pauseOn: () => me.setState({ paused: true }), pauseOff: () => me.setState({ paused: false }),
+      togglePlay: () => me.setState({ userPause: !s.userPause }), playLabel: s.userPause ? 'Play' : 'Pause',
+      marquee: ['Complimentary delivery', 'Handpicked pieces', 'Easy 30-day returns', 'Made in small batches', 'Complimentary delivery', 'Handpicked pieces', 'Easy 30-day returns', 'Made in small batches'],
+      cats,
+      best: P.filter(p => p.best).slice(0, 4).map(wished), fresh: P.filter(p => p.badge === 'New').slice(0, 4).map(wished),
+      rooms: [['Living Room', '0', 'oklch(0.5 0.035 245)'], ['Bedroom', '60px', 'oklch(0.44 0.035 245)'], ['Dining Room', '0', 'oklch(0.48 0.035 245)'], ['Kitchen', '60px', 'oklch(0.52 0.035 245)'], ['Home Office', '0', 'oklch(0.4 0.035 245)'], ['Bathroom', '60px', 'oklch(0.55 0.035 245)']].map((r, i) => ({ n: '0' + (i + 1), name: r[0], mt: r[1], tone: r[2] })),
+      quotes: [{ t: 'The Arca vase is even better in person. Everything arrived wrapped like a gift.', by: 'Imogen R. — London', mt: '0' }, { t: 'Finally a shop where nothing feels like filler. My living room finally feels finished.', by: 'Daniel K. — Berlin', mt: '40px' }, { t: 'The Lumen lamp changed how our evenings feel. Quiet, warm, perfect.', by: 'Sofia M. — Lisbon', mt: '0' }],
+      social: ['oklch(0.55 0.035 245)', 'oklch(0.7 0.035 245)', 'oklch(0.45 0.035 245)', 'oklch(0.5 0.035 245)', 'oklch(0.38 0.035 245)', 'oklch(0.62 0.035 245)'],
+      email: s.email, setEmail: e => me.setState({ email: e.target.value }),
+      subscribe: () => { if (/^\S+@\S+\.\S+$/.test(s.email)) { me.say('Thank you — welcome to Trendora'); me.setState({ email: '' }); } else me.say('Please enter a valid email'); },
+      footCols: [{ h: 'Shop', items: ['All products', 'New arrivals', 'Lighting', 'Textiles'] }, { h: 'Service', items: ['Shipping', 'Returns', 'FAQs', 'Contact'] }, { h: 'Trendora', items: ['Our story', 'Journal', 'Privacy', 'Terms'] }],
+      listTitle: isShop ? (s.onlyNew ? 'New arrivals' : s.cat === 'All' ? 'All objects' : s.cat) : 'Wishlist', listCount: list.length, emptyList: list.length === 0,
+      listItems: list.map(wished), chips, sort: s.sort, setSort: e => me.setState({ sort: e.target.value }),
+      openProduct: id => me.go('product', { pid: id, img: 0, color: 0, qty: 1, acc: 0 }),
+      toggleWish: id => { const had = s.wish.includes(id); toWish(id); me.say(had ? 'Removed from wishlist' : 'Saved to wishlist'); },
+      quickAdd: id => me.addItem(id, byId(id).colors[0], 1),
+      cur, thumbs: [0, 1, 2, 3].map(i => ({ n: i + 1, tone: i % 2 ? cur.tone2 : cur.tone, bd: s.img === i ? '#405B70' : '#EAE7E0', go: () => me.setState({ img: i }) })),
+      mainTone: s.img % 2 ? cur.tone2 : cur.tone, img1: s.img + 1,
+      swatches: cur.colors.map((c, i) => ({ name: c, hex: this.HEX[c] || '#ccc', ring: i === s.color ? '1px solid #405B70' : 'none', go: () => me.setState({ color: i }) })), colorName: color,
+      qty: s.qty, qMinus: () => me.setState({ qty: Math.max(1, s.qty - 1) }), qPlus: () => me.setState({ qty: s.qty + 1 }), lineTotal: cur.price * s.qty,
+      addCur: () => { me.addItem(cur.id, color, s.qty); me.setState({ cartOpen: true }); },
+      wishCur: () => { const had = s.wish.includes(cur.id); toWish(cur.id); me.say(had ? 'Removed from wishlist' : 'Saved to wishlist'); },
+      curHeart: s.wish.includes(cur.id) ? '♥' : '♡',
+      accs: accData.map((a, i) => ({ h: a[0], b: a[1], sign: s.acc === i ? '−' : '+', rows: s.acc === i ? '1fr' : '0fr', go: () => me.setState({ acc: s.acc === i ? -1 : i }) })),
+      related: P.filter(p => p.cat === cur.cat && p.id !== cur.id).concat(P.filter(p => p.cat !== cur.cat)).slice(0, 4).map(wished),
+      scrimO: s.cartOpen ? 1 : 0, scrimP: s.cartOpen ? 'auto' : 'none', drawerT: s.cartOpen ? 'translateX(0)' : 'translateX(105%)', closeCart: () => me.setState({ cartOpen: false }),
+      cartEmpty: lines.length === 0, lines, subtotal, shipLabel: subtotal === 0 ? '—' : ship === 0 ? 'Complimentary' : '$' + ship, grand: subtotal + ship,
+      freeNote: subtotal > 0 && subtotal < 150 ? 'Add $' + (150 - subtotal) + ' for complimentary delivery' : '',
+      checkout: () => { if (!lines.length) return me.say('Your bag is empty'); me.setState({ cart: [], cartOpen: false }); me.say('Order placed — demo checkout'); },
+      toast: s.toast, toastO: s.toast ? 1 : 0, toastY: s.toast ? '0' : '20px'
+    };
+  }
+}
+</script>
+</body>
+</html>
